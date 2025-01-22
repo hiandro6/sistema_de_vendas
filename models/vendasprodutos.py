@@ -3,7 +3,7 @@ from sqlalchemy import String, ForeignKey
 from typing import List
 from database import Base
 
-class VendasProdutos(Base):
+class VendaProdutos(Base):
     __tablename__ = 'tb_vendas_produtos'
     
     vpr_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
