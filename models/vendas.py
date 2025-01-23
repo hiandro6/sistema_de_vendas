@@ -17,11 +17,11 @@ class Venda(Base):
     @classmethod
     def find(cls, **kwargs):
         if 'id' in kwargs:
-            sql = text("SELECT * FROM tb_produtos WHERE pro_id = :id")
-            produto = session.execute(sql, {"id": kwargs['id']}).fetchone()
+            sql = text("SELECT * FROM tb_vendas WHERE ven_id = :id")
+            venda = session.execute(sql, {"id": kwargs['id']}).fetchone()
         else:
             raise AttributeError('A busca deve ser feita por id.')
-        return produto
+        return venda
 
     @classmethod
     def all(cls, ordem = "crescente"):
@@ -29,6 +29,6 @@ class Venda(Base):
             direcao = "ASC"
         elif ordem == "decrescente":
             direcao = "DESC"
-        sql = text(f"SELECT * FROM tb_produtos ORDER BY ven_data {direcao}")
-        produtos = session.execute(sql).fetchall()
-        return produtos
+        sql = text(f"SELECT * FROM tb_vendas ORDER BY ven_data {direcao}")
+        vendas = session.execute(sql).fetchall()
+        return vendas
