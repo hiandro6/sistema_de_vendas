@@ -1,7 +1,9 @@
 from sqlalchemy.orm import DeclarativeBase, mapped_column, relationship, Mapped
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, text
 from typing import List
 from database import Base
+from vendasprodutos import VendaProdutos
+from database.config import session
 
 class Venda(Base):
     __tablename__ = 'tb_vendas'
@@ -11,3 +13,22 @@ class Venda(Base):
     ven_cli_id: Mapped[int] = mapped_column(ForeignKey('tb_clientes.cli_id'))
 
     produtos: Mapped[List['VendaProdutos']] = relationship(back_populates='vendas')
+
+    @classmethod
+    def find(cls, **kwargs):
+        if 'id' in kwargs:
+            sql = text("SELECT * FROM tb_produtos WHERE pro_id = :id")
+            produto = session.execute(sql, {"id": kwargs['id']}).fetchone()
+        else:
+            raise AttributeError('A busca deve ser feita por id.')
+        return produto
+
+    @classmethod
+    def all(cls, ordem = "crescente"):
+        if ordem == "crescente":
+            direcao = "ASC"
+        elif ordem == "decrescente":
+            direcao = "DESC"
+        sql = text(f"SELECT * FROM tb_produtos ORDER BY ven_data {direcao}")
+        produtos = session.execute(sql).fetchall()
+        return produtos
