@@ -15,7 +15,7 @@ def listar():
         produtos = Produto.all(ordem=ordem)
     elif request.method == 'GET':
         produtos = Produto.all()
-    return render_template('clientes/index.html', produtos = produtos)
+    return render_template('produtos/index.html', produtos = produtos)
 
 @produto_bp.route('/adicionar', methods=['POST','GET'])
 def adicionar():
@@ -29,5 +29,7 @@ def adicionar():
         session.commit()
     
     else:
-        pass #Aqui vai ser o return render_template    
+        return render_template('produtos/adcionar.html') 
+        
+    
 
