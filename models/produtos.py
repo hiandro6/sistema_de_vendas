@@ -17,6 +17,20 @@ class Produto(Base):
     vendas: Mapped[List['VendaProdutos']] = relationship(back_populates='produtos')
 
     @classmethod
+    def estoque(cls, **kwargs):
+        if 'nome' in kwargs:
+            sql = text("SELECT pro_estoque FROM tb_produtos WHERE pro_nome = :nome")
+            produto = session.execute(sql, {"nome": kwargs['nome']}).fetchone()
+        elif 'id' in kwargs:
+            sql = text("SELECT pro_estoque FROM tb_produtos WHERE pro_id = :id")
+            produto = session.execute(sql, {"id": kwargs['id']}).fetchone()
+        
+        if produto:
+            return int(produto[0]) #acessando o valor do estoque(1° item da tupla)
+        else:
+            return 0
+
+    @classmethod
     def find(cls, **kwargs):
         if 'nome' in kwargs:
             sql = text("SELECT * FROM tb_produtos WHERE pro_nome = :nome")
