@@ -10,14 +10,15 @@ produto_bp = Blueprint(name='produto', import_name=__name__, template_folder='te
 
 @produto_bp.route('/listar')
 def listar():
-    produtos = Produto.all() #Classmethod : Select todos os produtos
-    try:
-        return render_template('/produtos/listar.html',produtos=produtos)
-    except:
-        return render_template('/produtos/listar.html')
+    if request.method == 'POST':
+        ordem = request.form['ordem']
+        produtos = Produto.all(ordem=ordem)
+    elif request.method == 'GET':
+        produtos = Produto.all()
+    return render_template('clientes/index.html', produtos = produtos)
 
-@produto_bp.route('/adcionar', methods=['POST','GET'])
-def adcionar():
+@produto_bp.route('/adicionar', methods=['POST','GET'])
+def adicionar():
     if request.method == 'POST':
         nome_produto = request.form['nome'] 
         desc_produto = request.form['descricao']
