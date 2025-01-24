@@ -1,0 +1,27 @@
+{% extends "model.html" %}
+
+{% block title %}
+    cadastrar cliente
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+<h1>cadastrar cliente</h1>
+<form action="{{url_for('clientes.register')}}" method="post">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" id="">
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="">
+    
+    <label for="telefone">Telefone:</label>
+    <input type="text" name="telefone" id="">
+
+    <label for="endereco">Endereço:</label>
+    <input type="text" name="endereco" id="">
+</form>
+
+{% endblock %}

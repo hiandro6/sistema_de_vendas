@@ -1,0 +1,21 @@
+{% extends "model.html" %}
+
+{% block title %}
+    fazer login
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+<h1>fazer login</h1>
+<form action="{{url_for('clientes.login')}}" method="post">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" id="">
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="">
+</form>
+
+{% endblock %}

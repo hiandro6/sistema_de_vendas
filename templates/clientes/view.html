@@ -1,0 +1,23 @@
+{% extends "model.html" %}
+
+{% block title %}
+    clientes cadastrados
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+
+<h1>clientes cadastrados</h1>
+<div>
+    <ol>
+        {% for cliente in clientes %}
+            <li>{{cliente.cli_nome}} | {{cliente.cli_email}} | {{cliente.cli_telefone}} | {{cliente.endereco}}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+{% endblock %}

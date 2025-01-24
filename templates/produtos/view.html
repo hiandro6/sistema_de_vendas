@@ -1,0 +1,22 @@
+{% extends "model.html" %}
+
+{% block title %}
+    produtos cadastrados
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <ol>
+        {% for produto in produtos %}
+            <li>{{produto.pro_nome}} | preço: {{produto.pro_preco}} | {{produto.pro_descricao}} | em estoque {{produto.pro_estoque}}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+{% endblock %}
