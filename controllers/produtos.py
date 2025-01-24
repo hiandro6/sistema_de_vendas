@@ -33,13 +33,25 @@ def add():
     
 @produto_bp.route('/edit/<int:pro_id>', methods=['GET','POST'])
 def edit(pro_id):
-    produto = Produto.find(id=pro_id)
-    if produto:
-        return render_template('produtos/edit.html')
+    if request.method == 'POST':
+        nome_produto = request.form['nome'] 
+        desc_produto = request.form['descricao']
+        preco_produto = request.form['preco']
+        estoque_produto = request.form['estoque']
+        produto = Produto.find(id=pro_id)
+        if produto:
+            produto.pro_nome = nome_produto
+            produto.pro_descricao = desc_produto
+            produto.pro_preco = preco_produto
+            produto.pro_estoque = estoque_produto
+            session.commit()
+            #flash edição realizada com sucesso
+        else:
+            #Adcionar flash() de erro
+            pass
+        return redirect(url_for('view')) #TALVEZ TENHA UM ERRO AQUI, não lembro se era pra ser produto.view
     else:
-        #Adcionar flash() de erro
-        pass
-    return redirect(url_for('view')) #TALVEZ TENHA UM ERRO AQUI, não lembro se era pra ser produto.view
+        render_template('produtos/edit.html')
 
 @produto_bp.route('/remove/<int:pro_id>', methods=['POST'])
 def remove(pro_id):
