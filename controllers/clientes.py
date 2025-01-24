@@ -21,7 +21,7 @@ def view():
         clientes = Cliente.all(ordem=ordem)
     elif request.method == 'GET':
         clientes = Cliente.all()
-    return render_template('clientes/index.html', clientes = clientes)
+    return render_template('clientes/view.html', clientes = clientes)
 
 @cliente_bp.route('/register', methods=['POST', 'GET'])
 def register():
@@ -48,8 +48,9 @@ def login():
         nome = request.form['nome']
         user = Cliente.find(email=email)
         if user:
-            login_user(user)
-            return redirect(url_for('view')) 
+            if nome == user.nome and email == user.email:
+                login_user(user)
+                return redirect(url_for('view')) 
     else:
         return render_template('cliente/login.html') 
 
