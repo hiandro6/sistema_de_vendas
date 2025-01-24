@@ -9,7 +9,7 @@ from database.config import session
 
 
 
-venda_bp = Blueprint(name='venda', import_name=_name_, template_folder='templates')
+venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates')
 
 @venda_bp.route('/view', methods=['POST', 'GET'])
 def view():
