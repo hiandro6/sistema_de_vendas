@@ -60,3 +60,33 @@ def logout():
     logout_user()
     #talvez colocar flash message logout efetuado com sucesso
     return redirect(url_for('view'))
+
+@cliente_bp.route('/remove/<int:cli_id>', methods=['POST'])
+def remove(cli_id):
+    cliente = Cliente.find(id=cli_id)
+    session.delete(cliente)
+    session.commit()
+    return redirect(url_for('view'))
+    #ADCIONAR FLASH()
+
+@cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
+def edit(cli_id):
+    if request.method == 'POST':
+        nome_cliente = request.form['nome'] 
+        email_cliente = request.form['email']
+        telefone_cliente = request.form['telefone']
+        endereco_cliente = request.form['endereco']
+        cliente = cliente.find(id=cli_id)
+        if cliente:
+            cliente.cli_nome = nome_cliente
+            cliente.cli_email = email_cliente
+            cliente.cli_telefone = telefone_cliente
+            cliente.cli_endereco = endereco_cliente
+            session.commit()
+            #flash operação realizada com sucesso
+        else:
+            #Adcionar flash() de erro
+            pass
+    else:
+        render_template('clientes/edit.html')
+    return redirect(url_for('view'))
