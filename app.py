@@ -23,5 +23,7 @@ app.register_blueprint(venda_bp)
 @app.route('/')
 def index():
     return "<h1>Teste</h1>"
-start_db()
+
+with app.app_context():
+    start_db()
 
