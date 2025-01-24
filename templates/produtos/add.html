@@ -1,0 +1,27 @@
+{% extends "model.html" %}
+
+{% block title %}
+    cadastrar produto
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+<h1>cadastrar produto</h1>
+<form action="{{url_for('produtos.add')}}" method="post">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" id="">
+
+    <label for="descricao">Descrição:</label>
+    <input type="text" name="descricao" id="">
+
+    <label for="preco">Preço:</label> <!-- o step define a quantidade de casas decimais aceitas -->
+    <input type="number" name="preco" id="preco" step="0.01" placeholder="0.00">
+
+    <label for="estoque">Quantidade em estoque:</label>
+    <input type="number" name="estoque" id="">
+</form>
+
+{% endblock %}
