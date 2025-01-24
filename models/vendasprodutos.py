@@ -12,6 +12,7 @@ class VendaProdutos(Base):
     vpr_quantproduto: Mapped[int] = mapped_column(nullable=False)
     vpr_precoproduto: Mapped[float] = mapped_column(nullable=False)
 
+    venda: Mapped["Venda"] = relationship("Venda", back_populates="produtos")
 
     #Produtos não vendidos: Lista os produtos que não foram vendidos nos últimos 7, 30, 60 e 90 dias.
     #SELECT pro_nome FROM tb_produtos JOIN tb_vendas ON pro_id = vpr_pro_id WHERE vpr_datavenda BETWEEN curdate AND curdate - interval 7 day 

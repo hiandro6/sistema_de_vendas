@@ -32,3 +32,4 @@ class Venda(Base):
         sql = text(f"SELECT * FROM tb_vendas ORDER BY ven_data {direcao}")
         vendas = session.execute(sql).fetchall()
         return vendas
+
