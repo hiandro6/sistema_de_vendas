@@ -12,7 +12,7 @@ login_manager = LoginManager()
 def load_user(user_id):
     return Cliente.find(cli_id=user_id)
 
-cliente_bp = Blueprint(name='cliente', import_name=__name__, template_folder='templates')
+cliente_bp = Blueprint(name='cliente', import_name=__name__, template_folder='templates', url_prefix='/clientes')
 
 @cliente_bp.route('/view', methods=['POST', 'GET'])
 def view():
@@ -38,7 +38,7 @@ def register():
             user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco)
             session.add(user)
             session.commit()
-    return render_template('cliente/register.html') 
+    return render_template('clientes/register.html') 
 
 
 @cliente_bp.route('/login', methods=['POST', 'GET'])
@@ -52,7 +52,7 @@ def login():
                 login_user(user)
                 return redirect(url_for('view')) 
     else:
-        return render_template('cliente/login.html') 
+        return render_template('clientes/login.html') 
 
 @cliente_bp.route('/logout', methods=['POST'])
 @login_required
