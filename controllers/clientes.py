@@ -50,7 +50,7 @@ def login():
         if user:
             if nome == user.cli_nome and email == user.cli_email:
                 login_user(user)
-                return redirect(url_for('venda.view')) 
+                return redirect(url_for('cliente.view')) 
     else:
         return render_template('clientes/login.html') 
 
@@ -59,14 +59,14 @@ def login():
 def logout():
     logout_user()
     #talvez colocar flash message logout efetuado com sucesso
-    return redirect(url_for('venda.view'))
+    return redirect(url_for('cliente.view'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['POST'])
 def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
     session.delete(cliente)
     session.commit()
-    return redirect(url_for('venda.view'))
+    return redirect(url_for('cliente.view'))
     #ADCIONAR FLASH()
 
 @cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
@@ -89,4 +89,4 @@ def edit(cli_id):
             pass
     else:
         return render_template('clientes/edit.html')
-    return redirect(url_for('venda.view'))
+    return redirect(url_for('cliente.view'))
