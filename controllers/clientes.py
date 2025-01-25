@@ -48,7 +48,7 @@ def login():
         nome = request.form['nome']
         user = Cliente.find(email=email)
         if user:
-            if nome == user.nome and email == user.email:
+            if nome == user.cli_nome and email == user.cli_email:
                 login_user(user)
                 return redirect(url_for('view')) 
     else:
