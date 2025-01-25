@@ -17,17 +17,29 @@ class Cliente(Base, UserMixin):
     cli_endereco:Mapped[str] = mapped_column(nullable=False)
     vendas: Mapped[list["Venda"]] = relationship("Venda", back_populates="clientes")
 
+
+    def get_id(self): #sobresrever get id do UserMixin
+        return str(self.cli_id)
+    
     @classmethod
     def find(cls, **kwargs):
         if 'email' in kwargs:
             sql = text("SELECT * FROM tb_clientes WHERE cli_email = :email")
-            cliente = session.execute(sql, {"email": kwargs['email']}).fetchone()
+            result = session.execute(sql, {"email": kwargs['email']}).first() #aqui retorna uma tupla, e precisamos retornar um objeto
         elif 'id' in kwargs:
             sql = text("SELECT * FROM tb_clientes WHERE cli_id = :id")
-            cliente = session.execute(sql, {"id": kwargs['id']}).fetchone()
+            result = session.execute(sql, {"id": kwargs['id']}).first()
         else:
             raise AttributeError('A busca deve ser feita por email ou id.')
-        return cliente
+        if result: # então aqui convertemos o resultado da consulta em uma instância de `Cliente`
+            return cls(
+                cli_id=result.cli_id,
+                cli_nome=result.cli_nome,
+                cli_email=result.cli_email,
+                cli_telefone=result.cli_telefone,
+                cli_endereco=result.cli_endereco
+            )
+        return None
 
 
     @classmethod
