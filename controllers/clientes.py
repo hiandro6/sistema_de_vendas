@@ -33,7 +33,7 @@ def register():
         user = Cliente.find(email=email)
         if user:
             #exibir mensagem de usuário já cadastrado
-            return redirect(url_for('login')) 
+            return redirect(url_for('cliente.login')) 
         else:
             user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco)
             session.add(user)
@@ -88,5 +88,5 @@ def edit(cli_id):
             #Adcionar flash() de erro
             pass
     else:
-        render_template('clientes/edit.html')
+        return render_template('clientes/edit.html')
     return redirect(url_for('view'))

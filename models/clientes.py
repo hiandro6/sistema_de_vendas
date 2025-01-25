@@ -15,8 +15,7 @@ class Cliente(Base, UserMixin):
     cli_email:Mapped[str] = mapped_column(unique = True, nullable=False)
     cli_telefone:Mapped[str] = mapped_column(nullable=False)
     cli_endereco:Mapped[str] = mapped_column(nullable=False)
-
-    vendas: Mapped[List['Venda']] = relationship(back_populates='cliente')
+    vendas: Mapped[list["Venda"]] = relationship("Venda", back_populates="clientes")
 
     @classmethod
     def find(cls, **kwargs):

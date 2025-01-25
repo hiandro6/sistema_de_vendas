@@ -14,7 +14,7 @@ class Produto(Base):
     pro_preco: Mapped[float] = mapped_column(nullable=False)
     pro_estoque: Mapped[int] = mapped_column()
 
-    vendas: Mapped[List['VendaProdutos']] = relationship('VendaProdutos', back_populates='produtos')
+    #vendas: Mapped[List['VendaProdutos']] = relationship('VendaProdutos', back_populates='produtos')
 
     @classmethod
     def estoque(cls, **kwargs):

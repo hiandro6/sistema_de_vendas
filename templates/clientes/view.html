@@ -15,6 +15,7 @@
     <ol>
         {% for cliente in clientes %}
             <li>{{cliente.cli_nome}} | {{cliente.cli_email}} | {{cliente.cli_telefone}} | {{cliente.endereco}}</li>
+            <a href="{{url_for('cliente.edit', cli_id=cliente.cli_id)}}">edit</a>
         {% endfor %}
     </ol>
 </div>

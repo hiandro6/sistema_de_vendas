@@ -5,14 +5,15 @@ from database import Base
 from .vendasprodutos import VendaProdutos
 from database.config import session
 
+
 class Venda(Base):
     __tablename__ = 'tb_vendas'
     ven_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     ven_data: Mapped[str] = mapped_column(nullable=False)
     ven_total: Mapped[float] = mapped_column(nullable=False)
     ven_cli_id: Mapped[int] = mapped_column(ForeignKey('tb_clientes.cli_id'))
-
-    produtos: Mapped[List['VendaProdutos']] = relationship(back_populates='vendas')
+    clientes: Mapped[List["Cliente"]] = relationship("Cliente", back_populates='vendas')
+    #produtos: Mapped[List['VendaProdutos']] = relationship(back_populates='vendas')
 
     @classmethod
     def find(cls, **kwargs):
