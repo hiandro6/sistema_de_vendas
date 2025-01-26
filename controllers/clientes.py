@@ -63,12 +63,16 @@ def logout():
     flash("logout efetuado com sucesso!", "success")
     return redirect(url_for('cliente.view'))
 
-@cliente_bp.route('/remove/<int:cli_id>', methods=['POST'])
+@cliente_bp.route('/remove/<int:cli_id>', methods=['GET', 'POST'])
 def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
-    session.delete(cliente)
-    session.commit()
-    flash("usuário removido!", "success")
+    try:
+        session.delete(cliente) #DELETE * FROM tb_clientes WHERE cli_id = cliente.cli_id
+        session.commit()
+        flash("usuário removido!", "success")
+    except:
+        flash("erro ao remover, tente novamente", "error")
+
     return redirect(url_for('cliente.view'))
     
 
