@@ -24,6 +24,13 @@ class Cliente(Base, UserMixin):
     @classmethod
     def find(cls, **kwargs):
         if 'email' in kwargs:
+            return session.query(cls).filter_by(cli_email=kwargs['email']).first() #SELECT * FROM tb_clientes WHERE cli_email = email
+        elif 'id' in kwargs:
+            return session.query(cls).filter_by(cli_id=kwargs['id']).first() #SELECT * FROM tb_clientes WHERE cli_id = id
+        else: 
+            raise AttributeError('A busca deve ser feita por email ou id.')
+
+        """if 'email' in kwargs:
             sql = text("SELECT * FROM tb_clientes WHERE cli_email = :email")
             result = session.execute(sql, {"email": kwargs['email']}).first() #aqui retorna uma tupla, e precisamos retornar um objeto
         elif 'id' in kwargs:
@@ -39,7 +46,7 @@ class Cliente(Base, UserMixin):
                 cli_telefone=result.cli_telefone,
                 cli_endereco=result.cli_endereco
             )
-        return None
+        return None"""
 
 
     @classmethod
