@@ -3,7 +3,6 @@ from sqlalchemy import String, ForeignKey, text
 from typing import List
 from database import Base
 from .vendasprodutos import VendaProdutos
-from .clientes import Cliente
 from database.config import session
 
 
@@ -13,7 +12,7 @@ class Venda(Base):
     ven_data: Mapped[str] = mapped_column(nullable=False)
     ven_total: Mapped[float] = mapped_column(nullable=False)
     ven_cli_id: Mapped[int] = mapped_column(ForeignKey('tb_clientes.cli_id'))
-    cliente: Mapped["Cliente"] = relationship("Cliente", back_populates="vendas")
+    clientes: Mapped[List["Cliente"]] = relationship("Cliente", back_populates='vendas')
     #produtos: Mapped[List['VendaProdutos']] = relationship(back_populates='vendas')
 
     @classmethod
