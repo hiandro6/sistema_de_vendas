@@ -13,7 +13,7 @@ class Venda(Base):
     ven_data: Mapped[str] = mapped_column(nullable=False)
     ven_total: Mapped[float] = mapped_column(nullable=False)
     ven_cli_id: Mapped[int] = mapped_column(ForeignKey('tb_clientes.cli_id'))
-    clientes: Mapped[List["Cliente"]] = relationship("Cliente", back_populates='vendas')
+    cliente: Mapped["Cliente"] = relationship("Cliente", back_populates="vendas")
     #produtos: Mapped[List['VendaProdutos']] = relationship(back_populates='vendas')
 
     @classmethod
