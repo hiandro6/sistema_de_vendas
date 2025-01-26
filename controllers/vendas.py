@@ -16,7 +16,7 @@ def view():
         vendas = Venda.all(ordem=ordem)
     elif request.method == 'GET':
         vendas = Venda.all()
-    return render_template('vendas/index.html', vendas = vendas)
+    return render_template('vendas/view.html', vendas = vendas)
 
 @venda_bp.route('/nova_venda', methods=['POST', 'GET'])
 def nova_venda():

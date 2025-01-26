@@ -10,7 +10,7 @@ login_manager = LoginManager()
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Cliente.find(cli_id=user_id)
+    return Cliente.find(id=user_id)
 
 cliente_bp = Blueprint(name='cliente', import_name=__name__, template_folder='templates', url_prefix='/clientes')
 
