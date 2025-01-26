@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Editar Cliente</h1>
-    <form action="{{ url_for('cliente.edit', cli_id=cliente.id) }}" method="POST">
+    <form action="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}" method="POST">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" value="{{ cliente.cli_nome }}" required>
         
