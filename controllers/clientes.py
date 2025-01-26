@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, request, render_template
+from flask import Blueprint, redirect, url_for, request, render_template, flash
 
 from flask_login import LoginManager, login_required, login_user, logout_user
 
@@ -32,7 +32,7 @@ def register():
         endereco = request.form['endereco']
         user = Cliente.find(email=email)
         if user:
-            #exibir mensagem de usuário já cadastrado
+            flash("usuário já cadastrado!", "warning")
             return redirect(url_for('cliente.login')) 
         else:
             user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco)
@@ -49,16 +49,18 @@ def login():
         user = Cliente.find(email=email)
         if user:
             if nome == user.cli_nome and email == user.cli_email:
-                login_user(user)
-                return redirect(url_for('cliente.view')) 
-    else:
-        return render_template('clientes/login.html') 
+                try:
+                    login_user(user)
+                    return redirect(url_for('cliente.view'))
+                except:
+                    flash("algo deu errado no seu login, tente novamente", "error")
+    return render_template('clientes/login.html') 
 
 @cliente_bp.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
-    #talvez colocar flash message logout efetuado com sucesso
+    flash("logout efetuado com sucesso!", "success")
     return redirect(url_for('cliente.view'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['POST'])
@@ -66,8 +68,9 @@ def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
     session.delete(cliente)
     session.commit()
+    flash("usuário removido!", "success")
     return redirect(url_for('cliente.view'))
-    #ADCIONAR FLASH()
+    
 
 @cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
 def edit(cli_id):
@@ -83,10 +86,10 @@ def edit(cli_id):
             cliente.cli_telefone = telefone_cliente
             cliente.cli_endereco = endereco_cliente
             session.commit()
-            #flash operação realizada com sucesso
+            flash("edição realizada!", "success")
         else:
-            #Adcionar flash() de erro
-            pass
+            flash("algo deu errado ao editar, tente novamente", "error")
     else:
         return render_template('clientes/edit.html')
+    
     return redirect(url_for('cliente.view'))
