@@ -6,11 +6,21 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Página edit clientes</h1>
-    <form action="{{url_for('cliente.edit', cli_id=cliente.id)}}">
-        <!-- TEM QUE FAZER A ROTA AINDA -->
-
-
+    <h1>Editar Cliente</h1>
+    <form action="{{ url_for('cliente.edit', cli_id=cliente.id) }}" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" value="{{ cliente.cli_nome }}" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ cliente.cli_email }}" required>
+        
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone" value="{{ cliente.cli_telefone }}">
+        
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco" value="{{ cliente.cli_endereco }}">
+        
+        <button type="submit">Salvar Alterações</button>
     </form>
 </body>
 </html>
