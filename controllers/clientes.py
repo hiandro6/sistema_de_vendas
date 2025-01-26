@@ -74,22 +74,28 @@ def remove(cli_id):
 
 @cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
 def edit(cli_id):
+    cliente = Cliente.find(id=cli_id)
     if request.method == 'POST':
-        nome_cliente = request.form['nome'] 
-        email_cliente = request.form['email']
-        telefone_cliente = request.form['telefone']
-        endereco_cliente = request.form['endereco']
-        cliente = cliente.find(id=cli_id)
         if cliente:
-            cliente.cli_nome = nome_cliente
-            cliente.cli_email = email_cliente
-            cliente.cli_telefone = telefone_cliente
-            cliente.cli_endereco = endereco_cliente
-            session.commit()
-            flash("edição realizada!", "success")
+            cliente.cli_nome = request.form['nome']
+            cliente.cli_email = request.form['email']
+            cliente.cli_telefone = request.form['telefone']
+            cliente.cli_endereco = request.form['endereco']
+            
+            try:
+                session.commit() 
+                flash("Edição realizada com sucesso!", "success")
+            except: #se não conseguir dar o commit
+                session.rollback()  # reverte as alterações em caso de erro
+                flash("Algo deu errado ao salvar as alterações, tente novamente.", "error")
         else:
-            flash("algo deu errado ao editar, tente novamente", "error")
+            flash("Cliente não encontrado.", "error")
+        
+        return redirect(url_for('cliente.view'))  # Redireciona para a página de listagem
+
+    # Se for uma requisição GET, renderiza o formulário com os dados do cliente
+    if cliente:
+        return render_template('clientes/edit.html', cliente=cliente)
     else:
-        return render_template('clientes/edit.html')
-    
-    return redirect(url_for('cliente.view'))
+        flash("Cliente não encontrado.", "error")
+        return redirect(url_for('cliente.view'))
