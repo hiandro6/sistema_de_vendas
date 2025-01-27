@@ -7,7 +7,7 @@ from sqlalchemy import text
 from database.config import session
 
 
-venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates')
+venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates', url_prefix='/vendas')
 
 @venda_bp.route('/', methods=['POST', 'GET'])
 def view():
