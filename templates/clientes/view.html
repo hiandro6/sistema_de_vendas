@@ -14,7 +14,7 @@
 <div>
     <ol>
         {% for cliente in clientes %}
-            <li>{{cliente.cli_nome}} | {{cliente.cli_email}} | {{cliente.cli_telefone}} | {{cliente.endereco}}</li>
+            <li>nome:{{cliente.cli_nome}} | email:{{cliente.cli_email}} | contato: {{cliente.cli_telefone}} | endereço: {{cliente.cli_endereco}}</li>
             <a href="{{url_for('cliente.edit', cli_id=cliente.cli_id)}}">editar usuário</a>
             <a href="{{url_for('cliente.remove', cli_id=cliente.cli_id)}}">deletar usuário</a>
         {% endfor %}
