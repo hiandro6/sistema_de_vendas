@@ -15,7 +15,7 @@ def view():
         ordem = request.form['ordem']
         vendas = Venda.all(ordem=ordem)
     elif request.method == 'GET':
-        sql = text(f"SELECT * FROM tb_vendas JOIN tb_vendas_produtos ON ven_id = vpr_ven_id")
+        sql = text(f"SELECT * FROM tb_vendas JOIN tb_clientes ON ven_cli_id = cli_id")
         # vendas = Venda.all()
         # vendapro = VendaProdutos.find(ven_id = vendas)
         vendas = session.execute(sql)

@@ -14,9 +14,9 @@
 <div>
     <ol>
         {% for venda in vendas %}
-            <li>data :{{venda.ven_data}} | total: {{venda.ven_total}} | {{venda.clientes}}</li>
-            <a href="{{url_for('venda.edit', cli_id=venda.cli_id)}}">editar venda</a>
-            <a href="{{url_for('venda.remove', cli_id=venda.cli_id)}}">deletar venda</a>
+            <li>data :{{venda.ven_data}} | total: {{venda.ven_total}} | comprador: {{venda.cli_nome}}</li>
+            <a href="{{url_for('venda.edit', ven_id=venda.ven_id)}}">editar venda</a>
+            <a href="{{url_for('venda.remove', ven_id=venda.ven_id)}}">deletar venda</a>
         {% endfor %}
     </ol>
 </div>
