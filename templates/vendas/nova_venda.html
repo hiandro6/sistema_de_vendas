@@ -7,11 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{url_for('nova_venda')}}" method="post">
+    <form action="{{url_for('venda.nova_venda')}}" method="post">
         <input type="date" name="data">
         <select name="" id="">
-            {{ % for produto in produtos % }}
-            {{ % endfor % }}
+            { % for produto in produtos % }
+            { % endfor % }
         </select>
     </form>
 
