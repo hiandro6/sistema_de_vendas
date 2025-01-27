@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from database.config import engine
 from database import Base
 from controllers.clientes import login_manager, cliente_bp
@@ -28,5 +28,5 @@ app.register_blueprint(venda_bp)
 
 @app.route('/')
 def index():
-    return "<h1>Teste</h1>"
+    return render_template('index.html')
 

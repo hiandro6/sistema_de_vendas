@@ -6,25 +6,35 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='cli-form.css') }}">
 {% endblock %}
 
 {% block content %}
-<h1>cadastrar cliente</h1>
-<form action="{{url_for('cliente.register')}}" method="post">
-    <label for="nome">Nome:</label>
-    <input type="text" name="nome" id="">
-
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="">
+<main>
+    <h1>Se Cadastre</h1>
+    <form action="{{url_for('cliente.register')}}" method="post" class="formulario register">
+        <div>
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="">
+        </div>
+        <div>
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" id="">
+        
+        </div>
+        <div>
+            <label for="endereco">Endereço:</label>
+            <input type="text" name="endereco" id="">
+        </div>
     
-    <label for="telefone">Telefone:</label>
-    <input type="text" name="telefone" id="">
+        <button type="submit">Cadastrar</button>
+    </form>
+</main>
 
-    <label for="endereco">Endereço:</label>
-    <input type="text" name="endereco" id="">
-
-    <input type="submit" value="enviar">
-
-</form>
 
 {% endblock %}

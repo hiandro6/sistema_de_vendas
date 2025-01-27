@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='model.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <div id="titulo">
+            <h1>Bem vindo, ao CliqueCompra</h1>
+            <p>Dê uma olhadinha em nosso <a href="{{url_for('produtos.view')}}">Catálogo</a></p>
+        </div>
+        <div class="opcoes">
+            <a href="{{url_for('cliente.login')}}">Faça Login</a>
+            <a href="{{url_for('cliente.register')}}">Cadastre-se</a>
+        </div>
+    </main>
+</body>
+</html>
