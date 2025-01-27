@@ -1,12 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "model.html" %}
+
+{% block title %}
+    vendas registradas
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+
+<h1>vendas registradas</h1>
+<div>
+    <ol>
+        {% for venda in vendas %}
+            <li>data :{{venda.ven_data}} | total: {{venda.ven_total}} | {{venda.clientes}}</li>
+            <a href="{{url_for('venda.edit', cli_id=venda.cli_id)}}">editar venda</a>
+            <a href="{{url_for('venda.remove', cli_id=venda.cli_id)}}">deletar venda</a>
+        {% endfor %}
+    </ol>
+</div>
+
+
+{% endblock %}

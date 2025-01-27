@@ -64,7 +64,7 @@ def nova_venda():
             preco_result = session.execute(sql, {"nome": produtos[i]})
             preco = preco_result.scalar()
             quantidade = int(quantidades[i])
-            venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantidade=quantidade, vpr_preco_unitario=preco)
+            venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantproduto=quantidade, vpr_precoproduto=preco)
             session.add(venda_produto)
             session.commit()
 
@@ -72,3 +72,10 @@ def nova_venda():
     else: 
         return render_template('vendas/nova_venda.html', produtos = Produto.all())
 
+@venda_bp.route('/edit', methods=['POST', 'GET'])
+def edit():
+    return "edit venda"
+
+@venda_bp.route('/remove', methods=['POST', 'GET'])
+def remove():
+    return "remove venda"
