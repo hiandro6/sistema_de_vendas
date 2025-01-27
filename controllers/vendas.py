@@ -36,12 +36,21 @@ def nova_venda():
 
         total = 0
         for i in range (0, len(produtos)): #calculando o valor total da venda e diminuindo as quantidades do estoque
-            preco = session.execute("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome", {"nome": produtos[i]}).scalar()
+            preco_sql = text("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome")
+            preco = session.execute(preco_sql, {"nome": produtos[i]}).scalar()
+            if preco is None:
+                return f"Erro: O produto '{produtos[i]}' não foi encontrado no banco de dados.", 400
+            preco = float(preco)
+
             total += preco * int(quantidades[i])
             
+            update_sql = text("UPDATE tb_produtos SET pro_estoque = :quantidade WHERE pro_nome = :nome")
             estoque_atual = Produto.estoque(nome = produtos[i])
             novo_estoque = estoque_atual - int(quantidades[i]) 
-            session.execute("UPDATE tb_produtos SET pro_estoque = :quantidade WHERE pro_nome = :nome", {"quantidade": novo_estoque, "nome": produtos[i]})
+            if novo_estoque < 0:
+                return f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", 400
+
+            session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
 
 
         venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
@@ -51,7 +60,8 @@ def nova_venda():
 
         #adicionando os produtos vendidos
         for i in range(len(produtos)):
-            preco_result = session.execute("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome", {"nome": produtos[i]})
+            sql = text("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome")
+            preco_result = session.execute(sql, {"nome": produtos[i]})
             preco = preco_result.scalar()
             quantidade = int(quantidades[i])
             venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantidade=quantidade, vpr_preco_unitario=preco)
@@ -60,5 +70,5 @@ def nova_venda():
 
         return redirect(url_for('venda.view'))
     else: 
-        return render_template('vendas/nova_venda.html')
+        return render_template('vendas/nova_venda.html', produtos = Produto.all())
 
