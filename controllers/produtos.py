@@ -8,7 +8,7 @@ produto_bp = Blueprint(name='produtos', import_name=__name__, template_folder='t
 #Nome dos produtos que tão sendo passados para a página view: {{produtos}} (linha 17)
 #Nome dos formulário pra adcionar produtos: (Linhas 22 até 25)
 
-@produto_bp.route('/view', methods=['GET','POST'])
+@produto_bp.route('/', methods=['GET','POST'])
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']

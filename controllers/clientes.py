@@ -16,7 +16,7 @@ def load_user(user_id):
 
 cliente_bp = Blueprint(name='cliente', import_name=__name__, template_folder='templates', url_prefix='/clientes')
 
-@cliente_bp.route('/view', methods=['POST', 'GET'])
+@cliente_bp.route('/', methods=['POST', 'GET'])
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']

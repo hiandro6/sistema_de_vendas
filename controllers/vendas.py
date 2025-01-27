@@ -3,19 +3,22 @@ from models.vendas import Venda
 from models.clientes import Cliente
 from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
-
+from sqlalchemy import text
 from database.config import session
 
 
 venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates')
 
-@venda_bp.route('/view', methods=['POST', 'GET'])
+@venda_bp.route('/', methods=['POST', 'GET'])
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']
         vendas = Venda.all(ordem=ordem)
     elif request.method == 'GET':
-        vendas = Venda.all()
+        sql = text(f"SELECT * FROM tb_vendas JOIN tb_vendas_produtos ON ven_id = vpr_ven_id")
+        # vendas = Venda.all()
+        # vendapro = VendaProdutos.find(ven_id = vendas)
+        vendas = session.execute(sql)
     return render_template('vendas/view.html', vendas = vendas)
 
 @venda_bp.route('/nova_venda', methods=['POST', 'GET'])
@@ -58,3 +61,4 @@ def nova_venda():
         return redirect(url_for('venda.view'))
     else: 
         render_template('vendas/nova_venda.html')
+
