@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "model.html" %}
+
+{% block title %}
+    editar produto
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+
+<h1>editar produto</h1>
     <h1>Editar Produto</h1>
     <form action="{{ url_for('produtos.edit', pro_id=produto.pro_id) }}" method="POST">
         <label for="nome">Nome:</label>
@@ -22,5 +27,4 @@
         
         <button type="submit">Salvar Alterações</button>
     </form>
-</body>
-</html>
+{% endblock %}
