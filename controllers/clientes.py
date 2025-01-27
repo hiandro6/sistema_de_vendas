@@ -6,6 +6,8 @@ from models.clientes import Cliente
 
 from database.config import session
 
+from sqlalchemy import text
+
 login_manager = LoginManager()
 
 @login_manager.user_loader
@@ -67,6 +69,8 @@ def logout():
 def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
     try:
+        # sql = text(f"DELETE * FROM tb_clientes WHERE cli_id = {cliente.cli_id}")
+        # session.execute(sql) POR ALGUM MOTIVO NÃO TA FUNCIONANDO AAAA
         session.delete(cliente) #DELETE * FROM tb_clientes WHERE cli_id = cliente.cli_id
         session.commit()
         flash("usuário removido!", "success")

@@ -36,6 +36,7 @@ class Produto(Base):
             sql = text("SELECT * FROM tb_produtos WHERE pro_nome = :nome")
             produto = session.execute(sql, {"nome": kwargs['nome']}).fetchone()
         elif 'id' in kwargs:
+            return session.query(cls).filter_by(pro_id=kwargs['id']).first()
             sql = text("SELECT * FROM tb_produtos WHERE pro_id = :id")
             produto = session.execute(sql, {"id": kwargs['id']}).fetchone()
         else:

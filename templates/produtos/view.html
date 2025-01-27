@@ -14,6 +14,9 @@
     <ol>
         {% for produto in produtos %}
             <li>{{produto.pro_nome}} | preço: {{produto.pro_preco}} | {{produto.pro_descricao}} | em estoque {{produto.pro_estoque}}</li>
+            <a href="{{url_for('produtos.edit', pro_id=produto.pro_id)}}">editar produto</a>
+            <a href="{{url_for('produtos.remove', pro_id=produto.pro_id)}}">deletar produto</a>
+        
         {% endfor %}
     </ol>
 </div>
