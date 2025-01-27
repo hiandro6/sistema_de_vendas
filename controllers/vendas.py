@@ -60,5 +60,5 @@ def nova_venda():
 
         return redirect(url_for('venda.view'))
     else: 
-        render_template('vendas/nova_venda.html')
+        return render_template('vendas/nova_venda.html')
 
