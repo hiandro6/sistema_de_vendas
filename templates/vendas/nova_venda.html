@@ -1,19 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="{{url_for('venda.nova_venda')}}" method="post">
-        <input type="date" name="data">
-        <select name="" id="">
-            { % for produto in produtos % }
-            { % endfor % }
-        </select>
+{% extends "model.html" %}
+
+{% block title %}
+    registrar venda
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+    <h1>Registrar Nova Venda</h1>
+    <form action="{{ url_for('venda.nova_venda') }}" method="post">
+        <!-- Data da Venda -->
+        <label for="data">Data da Venda:</label>
+        <input type="date" id="data" name="data" required><br><br>
+
+        <!-- Informações do Cliente -->
+        <label for="id_cliente">Informações do Cliente (ID ou Email):</label>
+        <input type="text" id="id_cliente" name="id_cliente" placeholder="ID ou Email do Cliente" required><br><br>
+
+        <!-- Produtos e Quantidades -->
+        <div id="produtos-container">
+            <div class="produto-item">
+                <label for="produtos">Produto:</label>
+                <select name="produtos" class="produtos" required>
+                    {% for produto in produtos %}
+                        <option value="{{ produto.pro_id }}">{{ produto.pro_nome }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantidades">Quantidade:</label>
+                <input type="number" name="quantidades" class="quantidades" min="1" required>
+                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+            </div>
+        </div>
+        <button type="button" id="adicionar-produto">Adicionar Produto</button><br><br>
+
+        <!-- Botão de Envio -->
+        <input type="submit" value="Registrar Venda">
     </form>
 
-</body>
-</html>
+    <script>
+        // Script para adicionar mais campos de produto
+        document.getElementById('adicionar-produto').addEventListener('click', function() {
+            const container = document.getElementById('produtos-container');
+            const novoProduto = document.createElement('div');
+            novoProduto.classList.add('produto-item');
+            novoProduto.innerHTML = `
+                <label for="produtos">Produto:</label>
+                <select name="produtos" class="produtos" required>
+                    {% for produto in produtos %}
+                        <option value="{{ produto.pro_id }}">{{ produto.pro_nome }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantidades">Quantidade:</label>
+                <input type="number" name="quantidades" class="quantidades" min="1" required>
+                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+            `;
+            container.appendChild(novoProduto);
+        });
+
+        // Script para remover um campo de produto
+        function removerProduto(button) {
+            const produtoItem = button.parentElement;
+            produtoItem.remove();
+        }
+    </script>
+{% endblock %}
