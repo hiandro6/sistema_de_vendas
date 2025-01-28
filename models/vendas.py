@@ -28,7 +28,7 @@ class Venda(Base):
             direcao = "ASC"
         elif ordem == "decrescente":
             direcao = "DESC"
-        sql = text(f"SELECT * FROM tb_vendas ORDER BY ven_data {direcao}")
+        sql = text(f"SELECT * FROM tb_vendas JOIN tb_clientes ON ven_cli_id = cli_id ORDER BY ven_data {direcao}")
         vendas = session.execute(sql).fetchall()
         return vendas
 

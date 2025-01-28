@@ -23,6 +23,17 @@
 
 <main>
     <h1>Clientes Cadastrados</h1>
+    <div class="filtro">
+        <span>Ordernar por</span>
+        <form action="{{url_for('cliente.view')}}" method="post">
+            <select name="ordem" id="filtro-cli">
+                <option value="crescente">crescente</option>
+                <option value="decrescente">decrescente</option>
+            </select>
+
+            <button type="submit">Ordernar</button>
+        </form>
+    </div>
     <div class="clientes">
         {% for cliente in clientes %}
             <div class="cliente">
