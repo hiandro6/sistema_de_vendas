@@ -13,17 +13,19 @@
 {% block content %}
 <nav>
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
-    <div class="links">
+    <div class="links cat">
         <a href="">Relatórios</a>
         <a href="">Vendas</a>
+        <a href="">Novo Produto</a>
+        <a href="">Sair</a>
     </div>
 </nav>
 <div id="produto">
     <ol class="itens">
-        {% for produto in produtos %}
+        {% for produto in produtos %}   
             <li class="item">
                 <h1>{{produto.pro_nome}}</h1>
-                <h2>{{produto.pro_descricao}}</h2>
+                <h2 id="descricao">{{produto.pro_descricao}}</h2>
                 <div class="p-e">
                     <h2 id="preco"><span style="color: gray;">R$</span> {{produto.pro_preco}}</h2>
                     <div id="divisor"></div>

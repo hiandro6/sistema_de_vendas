@@ -8,23 +8,23 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 1rem;
-        height: 100%;
         width: 80%;
-        margin-top:2rem;
+        margin-top: 2rem;
+        gap: 1rem; /* Ajuste conforme necessário */
 
         .item{
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            height: 30%;
+            height: 40%;
             width: 20%;
             background-color: white;
             border-radius: 10px;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-            gap: 10px;
+            gap: 20px;
             transition: transform 0.3s ease-in-out;
+            margin: 0;
             
 
             h1{
@@ -34,6 +34,10 @@
 
             h2{
                 color: grey;
+            }
+
+            #descricao {
+                font-size: 100%;
             }
 
             .p-e{
@@ -72,7 +76,7 @@
                 text-decoration: none;
                 text-align: center;
                 padding: 5px;
-                width: 30%;
+                width: 35%;
                 color: white;
                 border-radius: 5px;
                 transition: transform 0.5s ease-out, background-color 0.5s ease-out, box-shadow 0.5s     ease-out;
@@ -89,5 +93,13 @@
         .item:hover{
             transform: scale(0.95);
         }
+    }
+}
+
+.links.cat{
+    width: 40%;
+
+    a{
+        width: 20%;
     }
 }
