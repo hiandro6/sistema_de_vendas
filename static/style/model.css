@@ -92,3 +92,14 @@ nav{
     }
 
 }
+
+.suggestion-item{
+    opacity: 90%;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.suggestion-item:hover{
+    color: red;
+    opacity: 80%;
+}
