@@ -51,7 +51,7 @@ def nova_venda():
                 return f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", 400
 
             session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
-
+        total = round(total, 2)
         try:
             venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
             session.add(venda)
@@ -166,12 +166,12 @@ def edit(venda_id):
 
 @venda_bp.route('/remove/<int:venda_id>', methods=['POST', 'GET'])
 def remove(venda_id):
-    print('ENTROU NA ROTA')
+
     # Buscar a venda para verificar se existe
     venda_sql = text("SELECT * FROM tb_vendas WHERE ven_id = :venda_id")
     venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
     # venda = Venda.find(id = venda_id)
-    venda_produto = VendaProdutos.find(vpr_id = venda_id)
+
     if not venda:
         return f"Erro: Venda com ID {venda_id} não encontrada.", 404
 
@@ -182,9 +182,7 @@ def remove(venda_id):
             FROM tb_vendas_produtos
             WHERE vpr_ven_id = :venda_id
         """)
-        print('vai pegar venda_produtos')
         venda_produtos = session.execute(venda_produtos_sql, {"venda_id": venda_id}).fetchall()
-        print('pegou quem é venda_produtos')
 
         # Restaurar o estoque dos produtos
         for produto in venda_produtos:
@@ -217,12 +215,10 @@ def remove(venda_id):
         # Deletar os produtos associados à venda
         delete_venda_produtos_sql = text("DELETE FROM tb_vendas_produtos WHERE vpr_ven_id = :venda_id")
         session.execute(delete_venda_produtos_sql, {"venda_id": venda_id})
-        print('DELETOU A VENDA PRODUTOS')
 
         # Deletar a venda
         delete_venda_sql = text("DELETE FROM tb_vendas WHERE ven_id = :venda_id")
         session.execute(delete_venda_sql, {"venda_id": venda_id})
-        print('DELETOU A VENDA')
 
         # Confirmar as alterações no banco de dados
         session.commit()
