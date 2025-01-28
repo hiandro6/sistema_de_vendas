@@ -75,7 +75,7 @@ def nova_venda():
     else: 
         return render_template('vendas/nova_venda.html', produtos = Produto.all())
     
-    
+
 @venda_bp.route('/edit/<int:venda_id>', methods=['POST', 'GET'])
 def edit(venda_id):
     if request.method == 'POST':
@@ -164,6 +164,54 @@ def edit(venda_id):
 
         return render_template('vendas/edit.html', venda=venda, venda_produtos=venda_produtos, produtos=Produto.all())
 
-@venda_bp.route('/remove', methods=['POST', 'GET'])
-def remove():
-    return "remove venda"
+@venda_bp.route('/remove/<int:venda_id>', methods=['POST', 'GET'])
+def remove(venda_id):
+    # Buscar a venda para verificar se existe
+    # venda_sql = text("SELECT * FROM tb_vendas WHERE ven_id = :venda_id")
+    # venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
+    venda = Venda.find(id = venda_id)
+
+    if not venda:
+        return f"Erro: Venda com ID {venda_id} não encontrada.", 404
+
+    try:
+        # Buscar os produtos associados à venda
+        venda_produtos_sql = text("""
+            SELECT vp.vpr_pro_id, vp.vpr_quantproduto
+            FROM tb_vendas_produtos vp
+            WHERE vp.vpr_ven_id = :venda_id
+        """)
+        venda_produtos = session.execute(venda_produtos_sql, {"venda_id": venda_id}).fetchall()
+
+        # Restaurar o estoque dos produtos
+        for produto in venda_produtos:
+            produto_id = produto.vpr_pro_id
+            quantidade_vendida = produto.vpr_quantproduto
+
+            # Buscar o estoque atual do produto
+            estoque_atual_sql = text("SELECT pro_estoque FROM tb_produtos WHERE pro_id = :produto_id")
+            estoque_atual = session.execute(estoque_atual_sql, {"produto_id": produto_id}).scalar()
+
+            # Atualizar o estoque
+            novo_estoque = estoque_atual + quantidade_vendida
+            update_estoque_sql = text("UPDATE tb_produtos SET pro_estoque = :novo_estoque WHERE pro_id = :produto_id")
+            session.execute(update_estoque_sql, {"novo_estoque": novo_estoque, "produto_id": produto_id})
+
+        # Deletar os produtos associados à venda
+        delete_venda_produtos_sql = text("DELETE FROM tb_vendas_produtos WHERE vpr_ven_id = :venda_id")
+        session.execute(delete_venda_produtos_sql, {"venda_id": venda_id})
+
+        # Deletar a venda
+        delete_venda_sql = text("DELETE FROM tb_vendas WHERE ven_id = :venda_id")
+        session.execute(delete_venda_sql, {"venda_id": venda_id})
+
+        # Confirmar as alterações no banco de dados
+        session.commit()
+
+        flash("Venda removida com sucesso!", "success")
+        return redirect(url_for('venda.view'))
+
+    except Exception as e:
+        session.rollback()
+        flash(f"Erro ao remover a venda: {str(e)}", "error")
+        return redirect(url_for('venda.view'))
