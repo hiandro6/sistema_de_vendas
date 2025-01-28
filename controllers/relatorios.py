@@ -19,10 +19,3 @@ def filtros():
         pass
     else:
         return render_template("relatorios/filtros.html", produtos = consulta)
-
-#linha 192 de vendas
-#linha 192 de vendas
-#linha 192 de vendas
-#linha 192 de vendas
-#linha 192 de vendas
-#linha 192 de vendaskkkkkkkkkkk
