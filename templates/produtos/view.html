@@ -14,17 +14,26 @@
 <nav>
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
     <div class="links">
-        <a href="">blabla</a>
-        <a href="">blablabla</a>
+        <a href="">Relatórios</a>
+        <a href="">Vendas</a>
     </div>
 </nav>
-<div>
-    <ol>
+<div id="produto">
+    <ol class="itens">
         {% for produto in produtos %}
-            <li>{{produto.pro_nome}} | preço: {{produto.pro_preco}} | {{produto.pro_descricao}} | em estoque {{produto.pro_estoque}}</li>
-            <a href="{{url_for('produtos.edit', pro_id=produto.pro_id)}}">editar produto</a>
-            <a href="{{url_for('produtos.remove', pro_id=produto.pro_id)}}">deletar produto</a>
-        
+            <li class="item">
+                <h1>{{produto.pro_nome}}</h1>
+                <h2>{{produto.pro_descricao}}</h2>
+                <div class="p-e">
+                    <h2 id="preco"><span style="color: gray;">R$</span> {{produto.pro_preco}}</h2>
+                    <div id="divisor"></div>
+                    <h2 id="estoque"><span style="color: red;">{{produto.pro_estoque}}</span> unidades disponíveis</h2>
+                </div>
+                <div class="links-p">
+                    <a href="{{url_for('produtos.edit', pro_id=produto.pro_id)}}">Editar</a>
+                    <a href="{{url_for('produtos.remove', pro_id=produto.pro_id)}}">Deletar</a>
+                </div>
+            </li> 
         {% endfor %}
     </ol>
 </div>
