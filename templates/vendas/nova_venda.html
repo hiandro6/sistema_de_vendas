@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block head_extras %}
-<!-- link pro arquivo css  -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='style/edit.css') }}">
 {% endblock %}
@@ -23,30 +22,25 @@
 <main>
     <h1>Registrar Nova Venda</h1>
     <form action="{{ url_for('venda.nova_venda') }}" method="post" class="nova_venda">
-        
         <header>
-            <!-- Data da Venda -->
             <div class="dat-venda">
                 <label for="data">Data da Venda:</label>
                 <input type="date" id="data" name="data" required><br><br>
             </div>
-            <!-- Informações do Cliente -->
             <div class="info-cliente">
                 <label for="id_cliente">Informações do Cliente (ID ou Email):</label>
                 <input type="text" id="id_cliente" name="id_cliente" placeholder="ID ou Email do Cliente" required><br><br>
             </div>
         </header>
 
-        <!-- Produtos e Quantidades -->
         <div id="produtos-container">
             <div class="produto-item">
                 <div class="produto">
                     <label for="produtos">Produto:</label>
-                    <select name="produtos" class="produtos" required>
-                        {% for produto in produtos %}
-                            <option value="{{ produto.pro_nome }}">{{ produto.pro_nome }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="autocomplete">
+                        <input class="searchInput" type="text" placeholder="Digite algo..." onkeyup="showSuggestions(this)" />
+                        <div class="suggestions" style="display: none;"></div>
+                    </div>
                 </div>
 
                 <div class="qnt">
@@ -59,34 +53,77 @@
         </div>
         <button type="button" id="adicionar-produto">Adicionar Produto</button><br><br>
 
-        <!-- Botão de Envio -->
         <button type="submit">Adicionar Venda</button>
     </form>
 </main>
-    <script>
-        // Script para adicionar mais campos de produto
-        document.getElementById('adicionar-produto').addEventListener('click', function() {
-            const container = document.getElementById('produtos-container');
-            const novoProduto = document.createElement('div');
-            novoProduto.classList.add('produto-item');
-            novoProduto.innerHTML = `
+
+<script>
+    // Script para adicionar mais campos de produto
+    document.getElementById('adicionar-produto').addEventListener('click', function() {
+        const container = document.getElementById('produtos-container');
+        const novoProduto = document.createElement('div');
+        novoProduto.classList.add('produto-item');
+        novoProduto.innerHTML = `
+            <div class="produto">
                 <label for="produtos">Produto:</label>
-                <select name="produtos" class="produtos" required>
-                    {% for produto in produtos %}
-                        <option value="{{ produto.pro_nome }}">{{ produto.pro_nome }}</option>
-                    {% endfor %}
-                </select>
+                <div class="autocomplete">
+                    <input class="searchInput" type="text" placeholder="Digite algo..." onkeyup="showSuggestions(this)" />
+                    <div class="suggestions" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="qnt">
                 <label for="quantidades">Quantidade:</label>
                 <input type="number" name="quantidades" class="quantidades" min="1" required>
-                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
-            `;
-            container.appendChild(novoProduto);
+            </div>
+            <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+        `;
+        container.appendChild(novoProduto);
+    });
+    
+    // Script para remover um campo de produto
+    function removerProduto(button) {
+        const produtoItem = button.parentElement;
+        produtoItem.remove();
+    }
+    
+    function showSuggestions(input) {
+        const suggestions = input.nextElementSibling; // O próximo elemento é a div de sugestões
+        suggestions.innerHTML = ''; // Limpa sugestões anteriores
+
+        const value = input.value;
+        if (!value) {
+            suggestions.style.display = 'none'; // Oculta sugestões se a entrada estiver vazia
+            return;
+        }
+
+        // Adiciona sugestões do backend
+        const produtos = [
+            {% for produto in produtos %}
+                '{{ produto.pro_nome }}',
+            {% endfor %}
+        ];
+
+        let hasSuggestions = false; // Variável para verificar se há sugestões
+        produtos.forEach(produto => {
+            if (produto.toLowerCase().includes(value.toLowerCase())) {
+                hasSuggestions = true;
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = produto;
+                item.onclick = () => selectSuggestion(input, produto);
+                suggestions.appendChild(item);
+            }
         });
 
-        // Script para remover um campo de produto
-        function removerProduto(button) {
-            const produtoItem = button.parentElement;
-            produtoItem.remove();
-        }
-    </script>
+        suggestions.style.display = hasSuggestions ? 'block' : 'none'; // Mostra ou oculta as sugestões
+    }
+    
+    function selectSuggestion(input, value) {
+        input.value = value; // Define o valor do input
+        const suggestions = input.nextElementSibling; // O próximo elemento é a div de sugestões
+        suggestions.innerHTML = ''; // Limpa sugestões
+        suggestions.style.display = 'none'; // Oculta as sugestões
+    }
+</script>
+
 {% endblock %}
