@@ -6,27 +6,48 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/edit.css') }}">
 {% endblock %}
 
 {% block content %}
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links cat">
+        <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
+        <a href="{{url_for('venda.view')}}">Vendas</a>
+        <a href="{{url_for('produtos.view')}}">Produtos</a>
+        <a href="">Sair</a>
+    </div>
+</nav>
+<main>
     <h1>Editar Venda</h1>
-    <form action="{{ url_for('venda.edit', venda_id=venda.ven_id) }}" method="post">
+    <form action="{{ url_for('venda.edit', venda_id=venda.ven_id) }}" method="post" class="ed-venda">
         <!-- Data da Venda -->
-        <label for="data">Data da Venda:</label>
-        <input type="date" id="data" name="data" value="{{ venda.ven_data }}" required><br><br>
+
+        <div class="dat-venda">
+            <label for="data">Data da Venda:</label>
+            <input type="date" id="data" name="data" value="{{ venda.ven_data }}" required><br><br>
+        </div>
 
         <!-- Produtos e Quantidades -->
         <div id="produtos-container">
             {% for item in venda_produtos %}
             <div class="produto-item">
-                <label for="produtos">Produto:</label>
-                <select name="produtos" class="produtos" required>
-                    {% for produto in produtos %}
-                        <option value="{{ produto.pro_nome }}" {% if produto.pro_nome == item.pro_nome %}selected{% endif %}>{{ produto.pro_nome }}</option>
-                    {% endfor %}
-                </select>
-                <label for="quantidades">Quantidade:</label>
-                <input type="number" name="quantidades" class="quantidades" min="1" value="{{ item.vpr_quantproduto }}" required>
+                <div class="produto">
+                    <label for="produtos">Produto:</label>
+                    <select name="produtos" class="produtos" required>
+                        {% for produto in produtos %}
+                            <option value="{{ produto.pro_nome }}" {% if produto.pro_nome == item.pro_nome %}selected{% endif %}>{{ produto.pro_nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="qnts">
+                    <label for="quantidades">Quantidade:</label>
+                    <input type="number" name="quantidades" class="quantidades" min="1" value="{{ item.vpr_quantproduto }}" required>
+                </div>
+
                 <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
             </div>
             {% endfor %}
@@ -34,9 +55,9 @@
         <button type="button" id="adicionar-produto">Adicionar Produto</button><br><br>
 
         <!-- Botão de Envio -->
-        <input type="submit" value="Atualizar Venda">
+        <button type="submit">Atualizar</button>
     </form>
-
+</main>
     <script>
         // Adicionar novos produtos
         document.getElementById('adicionar-produto').addEventListener('click', function() {

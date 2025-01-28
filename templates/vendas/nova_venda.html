@@ -6,39 +6,63 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/edit.css') }}">
 {% endblock %}
 
 {% block content %}
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links cat">
+        <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
+        <a href="{{url_for('produtos.view')}}">Produtos</a>
+        <a href="{{url_for('produtos.add')}}">Novo Produto</a>
+        <a href="">Sair</a>
+    </div>
+</nav>
+<main>
     <h1>Registrar Nova Venda</h1>
-    <form action="{{ url_for('venda.nova_venda') }}" method="post">
-        <!-- Data da Venda -->
-        <label for="data">Data da Venda:</label>
-        <input type="date" id="data" name="data" required><br><br>
-
-        <!-- Informações do Cliente -->
-        <label for="id_cliente">Informações do Cliente (ID ou Email):</label>
-        <input type="text" id="id_cliente" name="id_cliente" placeholder="ID ou Email do Cliente" required><br><br>
+    <form action="{{ url_for('venda.nova_venda') }}" method="post" class="nova_venda">
+        
+        <header>
+            <!-- Data da Venda -->
+            <div class="dat-venda">
+                <label for="data">Data da Venda:</label>
+                <input type="date" id="data" name="data" required><br><br>
+            </div>
+            <!-- Informações do Cliente -->
+            <div class="info-cliente">
+                <label for="id_cliente">Informações do Cliente (ID ou Email):</label>
+                <input type="text" id="id_cliente" name="id_cliente" placeholder="ID ou Email do Cliente" required><br><br>
+            </div>
+        </header>
 
         <!-- Produtos e Quantidades -->
         <div id="produtos-container">
             <div class="produto-item">
-                <label for="produtos">Produto:</label>
-                <select name="produtos" class="produtos" required>
-                    {% for produto in produtos %}
-                        <option value="{{ produto.pro_nome }}">{{ produto.pro_nome }}</option>
-                    {% endfor %}
-                </select>
-                <label for="quantidades">Quantidade:</label>
-                <input type="number" name="quantidades" class="quantidades" min="1" required>
+                <div class="produto">
+                    <label for="produtos">Produto:</label>
+                    <select name="produtos" class="produtos" required>
+                        {% for produto in produtos %}
+                            <option value="{{ produto.pro_nome }}">{{ produto.pro_nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="qnt">
+                    <label for="quantidades">Quantidade:</label>
+                    <input type="number" name="quantidades" class="quantidades" min="1" required>
+                </div>
+                
                 <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
             </div>
         </div>
         <button type="button" id="adicionar-produto">Adicionar Produto</button><br><br>
 
         <!-- Botão de Envio -->
-        <input type="submit" value="Registrar Venda">
+        <button type="submit">Adicionar Venda</button>
     </form>
-
+</main>
     <script>
         // Script para adicionar mais campos de produto
         document.getElementById('adicionar-produto').addEventListener('click', function() {

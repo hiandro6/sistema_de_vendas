@@ -51,6 +51,82 @@ main{
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
     }
+
+    .ed-venda{
+        width: auto;
+        max-width: 60rem;
+
+
+        button{
+            width: 10rem;
+        }
+
+        .produto-item{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background-color: rgb(223, 223, 223);
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+            button{
+                width: 5rem;
+            }
+        }
+
+        #produtos-container{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            
+        }
+    }
+
+    .nova_venda{
+        width: auto;
+        
+        header{
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 1rem;
+        }
+        div{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-cliente label{
+            width: 12rem;
+        }
+
+        div input{
+            width: 10rem;
+        }
+
+        .produto-item{
+            display: flex;
+            width: ;
+            gap: 0.5rem;
+            background-color: rgb(223, 223, 223);
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+            button{
+                width: 5rem;
+            }
+        }
+
+        #produtos-container{
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 1rem;
+            
+        }
+    }
     
 }
 
