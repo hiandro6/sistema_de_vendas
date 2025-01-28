@@ -26,19 +26,19 @@
         <h1>{{produto.pro_nome}}</h1>
         <div>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" placeholder="{{ produto.pro_nome }}" required>
+            <input type="text" id="nome" name="nome" value="{{ produto.pro_nome }}" required>
         </div>
         <div>
             <label for="descricao">Descrição:</label>
-            <input type="text" id="descricao" name="descricao" placeholder="{{ produto.pro_descricao }}" required>
+            <input type="text" id="descricao" name="descricao" value="{{ produto.pro_descricao }}" required>
         </div>
         <div>
             <label for="preco">preco:</label>
-            <input type="number" id="preco" name="preco" step="0.01" placeholder="{{ produto.pro_preco }}">
+            <input type="number" id="preco" name="preco" step="0.01" value="{{ produto.pro_preco }}">
         </div>
         <div>
             <label for="estoque">Estoque:</label>
-            <input type="number" id="estoque" name="estoque" placeholder="{{ produto.pro_estoque }}">
+            <input type="number" id="estoque" name="estoque" value="{{ produto.pro_estoque }}">
         </div>
         
         <button type="submit">Salvar Alterações</button>

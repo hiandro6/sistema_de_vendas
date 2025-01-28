@@ -1,22 +1,44 @@
 {% extends "model.html" %}
 
 {% block title %}
-    vendas registradas
+    produtos cadastrados
 {% endblock %}
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/itens.css') }}">
 {% endblock %}
 
 {% block content %}
-
-<h1>vendas registradas</h1>
-<div>
-    <ol>
-        {% for venda in vendas %}
-            <li>data :{{venda.ven_data}} | total: {{venda.ven_total}} | comprador: {{venda.cli_nome}}</li>
-            <a href="{{url_for('venda.edit', venda_id=venda.ven_id)}}">editar venda</a>
-            <a href="{{url_for('venda.remove', venda_id=venda.ven_id)}}">deletar venda</a>
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links cat">
+        <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
+        <a href="{{url_for('produtos.view')}}">Produtos</a>
+        <a href="{{url_for('produtos.add')}}">Novo Produto</a>
+        <a href="">Sair</a>
+    </div>
+</nav>
+<div id="produto">
+    <ol class="itens">
+        {% for venda in vendas %}   
+            <li class="item venda">
+                <div class="p-e venda">
+                    <h2 id="tit_total">Total da venda</h2>
+                    <div id="divisor"></div>
+                    <h2 id="preco"><span style="color: gray;">R$ </span>{{venda.ven_total}}</h2>
+                </div>
+                <div class="dados">
+                    <h2>Data: <span style="color: red;">{{venda.ven_data}}</span></h2>
+                    <h2>Comprador: <span style="color: red;">{{venda.cli_nome}}</span> | ID: <span style="color: red;">{{venda.cli_id}}</span></h2>
+                    <h2></h2>
+                </div>
+                <div class="links-p">
+                    <a href="{{url_for('venda.edit', venda_id=venda.ven_id)}}">Editar</a>
+                    <a href="{{url_for('venda.remove', venda_id=venda.ven_id)}}">Deletar</a>
+                </div>
+            </li> 
         {% endfor %}
     </ol>
 </div>
