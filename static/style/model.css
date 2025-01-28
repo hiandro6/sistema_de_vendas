@@ -17,7 +17,7 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: auto;
     height: 60px;
     margin: 1rem;
     gap: 10px;
@@ -31,9 +31,10 @@ nav{
         justify-content: space-around;
         background-color: white;
         border-radius: 10px;
-        width: 20%;
+        width: auto;
         padding: 0.5em;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+        gap: 0.5rem;
 
         a{
             background-color: red;
@@ -57,7 +58,7 @@ nav{
 }
 
 .links.cat{
-    width: 35%;
+    width: auto;
 
     a{
         width: 8rem;

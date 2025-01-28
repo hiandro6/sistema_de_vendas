@@ -17,29 +17,34 @@
         <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
         <a href="{{url_for('produtos.view')}}">Produtos</a>
         <a href="{{url_for('produtos.add')}}">Novo Produto</a>
+        <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
         <a href="">Sair</a>
     </div>
 </nav>
 <div id="produto">
     <ol class="itens">
-        {% for venda in vendas %}   
-            <li class="item venda">
-                <div class="p-e venda">
-                    <h2 id="tit_total">Total da venda</h2>
-                    <div id="divisor"></div>
-                    <h2 id="preco"><span style="color: gray;">R$ </span>{{venda.ven_total}}</h2>
-                </div>
-                <div class="dados">
-                    <h2>Data: <span style="color: red;">{{venda.ven_data}}</span></h2>
-                    <h2>Comprador: <span style="color: red;">{{venda.cli_nome}}</span> | ID: <span style="color: red;">{{venda.cli_id}}</span></h2>
-                    <h2></h2>
-                </div>
-                <div class="links-p">
-                    <a href="{{url_for('venda.edit', venda_id=venda.ven_id)}}">Editar</a>
-                    <a href="{{url_for('venda.remove', venda_id=venda.ven_id)}}">Deletar</a>
-                </div>
-            </li> 
-        {% endfor %}
+        {%if vendas%}
+            {% for venda in vendas %}   
+                <li class="item venda">
+                    <div class="p-e venda">
+                        <h2 id="tit_total">Total da venda</h2>
+                        <div id="divisor"></div>
+                        <h2 id="preco"><span style="color: gray;">R$ </span>{{venda.ven_total}}</h2>
+                    </div>
+                    <div class="dados">
+                        <h2>Data: <span style="color: red;">{{venda.ven_data}}</span></h2>
+                        <h2>Comprador: <span style="color: red;">{{venda.cli_nome}}</span> | ID: <span style="color: red;">{{venda.cli_id}}</span></h2>
+                        <h2></h2>
+                    </div>
+                    <div class="links-p">
+                        <a href="{{url_for('venda.edit', venda_id=venda.ven_id)}}">Editar</a>
+                        <a href="{{url_for('venda.remove', venda_id=venda.ven_id)}}">Deletar</a>
+                    </div>
+                </li> 
+            {% endfor %}
+        {%else%}
+            <h1>Nada foi vendido ainda :(</h1>
+        {%endif%}
     </ol>
 </div>
 

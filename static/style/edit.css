@@ -124,10 +124,21 @@ main{
             width: 100%;
             flex-wrap: wrap;
             gap: 1rem;
-            
         }
     }
-    
+
+    .ed-cliente{
+        width: 20rem;
+        background-color: white;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+
+        div{
+            width: 100%;
+        }
+    }
+
 }
 
 

@@ -6,23 +6,47 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/edit.css') }}">
 {% endblock %}
 
 {% block content %}
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links cat">
+        <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
+        <a href="{{url_for('produtos.view')}}">Produtos</a>
+        <a href="{{url_for('produtos.add')}}">Novo Produto</a>
+        <a href="">Sair</a>
+    </div>
+</nav>
+<main>
     <h1>Editar Cliente</h1>
-    <form action="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}" method="POST">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value="{{ cliente.cli_nome }}" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ cliente.cli_email }}" required>
-        
-        <label for="telefone">Telefone:</label>
-        <input type="text" id="telefone" name="telefone" value="{{ cliente.cli_telefone }}">
-        
-        <label for="endereco">Endereço:</label>
-        <input type="text" id="endereco" name="endereco" value="{{ cliente.cli_endereco }}">
-        
-        <button type="submit">Salvar Alterações</button>
+    <form action="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}" method="POST" class="ed-cliente">
+        <form action="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}" method="POST">
+            <div>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" value="{{ cliente.cli_nome }}" required>
+            </div>
+            
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ cliente.cli_email }}" required>
+            </div>
+            
+            <div>
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone" value="{{ cliente.cli_telefone }}">
+            </div>
+            
+            <div>
+                <label for="endereco">Endereço:</label>
+                <input type="text" id="endereco" name="endereco" value="{{ cliente.cli_endereco }}">
+            </div>
+            
+            <button type="submit">Salvar Alterações</button>
+        </form>
     </form>
+</main>
+
 {% endblock %}
