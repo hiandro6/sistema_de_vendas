@@ -1,0 +1,66 @@
+{% extends "model.html" %}
+
+{% block title %}
+    editar venda
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+    <h1>Editar Venda</h1>
+    <form action="{{ url_for('venda.edit', venda_id=venda.ven_id) }}" method="post">
+        <!-- Data da Venda -->
+        <label for="data">Data da Venda:</label>
+        <input type="date" id="data" name="data" value="{{ venda.ven_data }}" required><br><br>
+
+        <!-- Produtos e Quantidades -->
+        <div id="produtos-container">
+            {% for item in venda_produtos %}
+            <div class="produto-item">
+                <label for="produtos">Produto:</label>
+                <select name="produtos" class="produtos" required>
+                    {% for produto in produtos %}
+                        <option value="{{ produto.pro_nome }}" {% if produto.pro_nome == item.pro_nome %}selected{% endif %}>{{ produto.pro_nome }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantidades">Quantidade:</label>
+                <input type="number" name="quantidades" class="quantidades" min="1" value="{{ item.vpr_quantproduto }}" required>
+                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="adicionar-produto">Adicionar Produto</button><br><br>
+
+        <!-- Botão de Envio -->
+        <input type="submit" value="Atualizar Venda">
+    </form>
+
+    <script>
+        // Adicionar novos produtos
+        document.getElementById('adicionar-produto').addEventListener('click', function() {
+            const container = document.getElementById('produtos-container');
+            const novoProduto = document.createElement('div');
+            novoProduto.classList.add('produto-item');
+            novoProduto.innerHTML = `
+                <label for="produtos">Produto:</label>
+                <select name="produtos" class="produtos" required>
+                    {% for produto in produtos %}
+                        <option value="{{ produto.pro_nome }}">{{ produto.pro_nome }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantidades">Quantidade:</label>
+                <input type="number" name="quantidades" class="quantidades" min="1" required>
+                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+            `;
+            container.appendChild(novoProduto);
+        });
+
+        // Remover um campo de produto
+        function removerProduto(button) {
+            const produtoItem = button.parentElement;
+            produtoItem.remove();
+        }
+    </script>
+{% endblock %}

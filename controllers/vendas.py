@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, request, render_template
+from flask import Blueprint, redirect, url_for, request, render_template, flash
 from models.vendas import Venda
 from models.clientes import Cliente
 from models.produtos import Produto
@@ -52,10 +52,13 @@ def nova_venda():
 
             session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
 
-
-        venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
-        session.add(venda)
-        session.commit()
+        try:
+            venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
+            session.add(venda)
+            session.commit()
+        except:
+            flash("ocorreu um erro ao cadastrar a venda", "error")
+            return redirect(url_for('venda.nova_venda'))
 
 
         #adicionando os produtos vendidos
@@ -71,10 +74,95 @@ def nova_venda():
         return redirect(url_for('venda.view'))
     else: 
         return render_template('vendas/nova_venda.html', produtos = Produto.all())
+    
+    
+@venda_bp.route('/edit/<int:venda_id>', methods=['POST', 'GET'])
+def edit(venda_id):
+    if request.method == 'POST':
+        # Coletar dados do formulário
+        data = request.form['data']
+        produtos = request.form.getlist('produtos')
+        quantidades = request.form.getlist('quantidades')
 
-@venda_bp.route('/edit', methods=['POST', 'GET'])
-def edit():
-    return "edit venda"
+        # Buscar a venda existente
+        venda_sql = text("SELECT * FROM tb_vendas WHERE ven_id = :venda_id")
+        venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
+
+        if not venda:
+            return f"Erro: Venda com ID {venda_id} não encontrada.", 404
+
+        # Atualizar a venda
+        update_venda_sql = text("UPDATE tb_vendas SET ven_data = :data WHERE ven_id = :venda_id")
+        session.execute(update_venda_sql, {"data": data, "venda_id": venda_id})
+
+        # Deletar produtos relacionados à venda
+        delete_venda_produtos_sql = text("DELETE FROM tb_vendas_produtos WHERE vpr_ven_id = :venda_id")
+        session.execute(delete_venda_produtos_sql, {"venda_id": venda_id})
+
+        # Inicializar o total da venda
+        total = 0
+
+        # Adicionar os novos produtos da venda
+        for i in range(len(produtos)):
+            # Atualizar estoque do produto
+            produto_nome = produtos[i]
+            quantidade = int(quantidades[i])
+
+            estoque_atual_sql = text("SELECT pro_estoque FROM tb_produtos WHERE pro_nome = :produto_nome")
+            estoque_atual = session.execute(estoque_atual_sql, {"produto_nome": produto_nome}).scalar()
+
+            if estoque_atual < quantidade:
+                return f"Erro: Estoque insuficiente para o produto '{produto_nome}'.", 400
+
+            novo_estoque = estoque_atual - quantidade
+            update_estoque_sql = text("UPDATE tb_produtos SET pro_estoque = :novo_estoque WHERE pro_nome = :produto_nome")
+            session.execute(update_estoque_sql, {"novo_estoque": novo_estoque, "produto_nome": produto_nome})
+
+            # Obter o preço do produto
+            preco_sql = text("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :produto_nome")
+            preco = session.execute(preco_sql, {"produto_nome": produto_nome}).scalar()
+
+            # Calcular o total da venda
+            total += preco * quantidade
+
+            # Inserir o novo produto na venda
+            insert_venda_produtos_sql = text("""
+                INSERT INTO tb_vendas_produtos (vpr_ven_id, vpr_pro_id, vpr_quantproduto, vpr_precoproduto)
+                VALUES (:venda_id, :produto_nome, :quantidade, :preco)
+            """)
+            session.execute(insert_venda_produtos_sql, {
+                "venda_id": venda_id,
+                "produto_nome": produto_nome,
+                "quantidade": quantidade,
+                "preco": preco
+            })
+
+        # Atualizar o valor total da venda na tabela `tb_vendas`
+        update_total_sql = text("UPDATE tb_vendas SET ven_total = :total WHERE ven_id = :venda_id")
+        session.execute(update_total_sql, {"total": total, "venda_id": venda_id})
+
+        # Confirmar as alterações
+        session.commit()
+
+        return redirect(url_for('venda.view'))
+
+    else:
+        # Buscar os dados da venda para exibir no formulário
+        venda_sql = text("SELECT * FROM tb_vendas WHERE ven_id = :venda_id")
+        venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
+
+        if not venda:
+            return f"Erro: Venda com ID {venda_id} não encontrada.", 404
+
+        venda_produtos_sql = text("""
+            SELECT vp.vpr_quantproduto, p.pro_nome 
+            FROM tb_vendas_produtos vp
+            JOIN tb_produtos p ON vp.vpr_pro_id = p.pro_nome
+            WHERE vp.vpr_ven_id = :venda_id
+        """)
+        venda_produtos = session.execute(venda_produtos_sql, {"venda_id": venda_id}).fetchall()
+
+        return render_template('vendas/edit.html', venda=venda, venda_produtos=venda_produtos, produtos=Produto.all())
 
 @venda_bp.route('/remove', methods=['POST', 'GET'])
 def remove():
