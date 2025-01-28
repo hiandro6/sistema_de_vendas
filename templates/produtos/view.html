@@ -20,6 +20,17 @@
         <a href="">Sair</a>
     </div>
 </nav>
+<div class="filtro p-v">
+    <span>Ordernar por</span>
+    <form action="{{url_for('produtos.view')}}" method="post">
+        <select name="ordem" id="filtro-cli">
+            <option value="crescente">crescente</option>
+            <option value="decrescente">decrescente</option>
+        </select>
+
+        <button type="submit">Ordernar</button>
+    </form>
+</div>
 <div id="produto">
     <ol class="itens">
         {%if produtos %}
