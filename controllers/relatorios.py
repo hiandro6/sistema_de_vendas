@@ -38,7 +38,7 @@ WHERE pro_id NOT IN (
     WHERE ven_data >= DATE('now', '-? days')
 )
 """)
-        consulta = session.execute(sql_sqlite, (dias,)).fetchall()
+        consulta = session.execute(sql_sqlite, {"dias": dias}).fetchall()
         print(consulta)
     except Exception as e:
         print(f"Erro ao gerar relatório: {str(e)}", "error")
