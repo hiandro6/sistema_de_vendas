@@ -6,10 +6,19 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
 {% endblock %}
 
 {% block content %}
-
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links cat">
+        <a href="">Relatórios</a>
+        <a href="">Vendas</a>
+        <a href="">Produtos</a>
+        <a href="">Sair</a>
+    </div>
+</nav>
 <h1>editar produto</h1>
     <h1>Editar Produto</h1>
     <form action="{{ url_for('produtos.edit', pro_id=produto.pro_id) }}" method="POST">

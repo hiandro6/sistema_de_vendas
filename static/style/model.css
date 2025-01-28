@@ -56,3 +56,11 @@ nav{
     }
 }
 
+.links.cat{
+    width: 35%;
+
+    a{
+        width: 20%;
+    }
+}
+
