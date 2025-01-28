@@ -7,33 +7,41 @@
 {% block head_extras %}
 <!-- link pro arquivo css  -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/edit.css') }}">
 {% endblock %}
 
 {% block content %}
 <nav>
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
     <div class="links cat">
-        <a href="">Relatórios</a>
-        <a href="">Vendas</a>
-        <a href="">Produtos</a>
+        <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
+        <a href="{{url_for('venda.view')}}">Vendas</a>
+        <a href="{{url_for('produtos.view')}}">Produtos</a>
         <a href="">Sair</a>
     </div>
 </nav>
-<h1>editar produto</h1>
+<main>
     <h1>Editar Produto</h1>
     <form action="{{ url_for('produtos.edit', pro_id=produto.pro_id) }}" method="POST">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value="{{ produto.pro_nome }}" required>
-        
-        <label for="descricao">Descrição:</label>
-        <input type="text" id="descricao" name="descricao" value="{{ produto.pro_descricao }}" required>
-        
-        <label for="preco">preco:</label>
-        <input type="number" id="preco" name="preco" step="0.01" value="{{ produto.pro_preco }}">
-        
-        <label for="estoque">Estoque:</label>
-        <input type="number" id="estoque" name="estoque" value="{{ produto.pro_estoque }}">
+        <h1>{{produto.pro_nome}}</h1>
+        <div>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="{{ produto.pro_nome }}" required>
+        </div>
+        <div>
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" placeholder="{{ produto.pro_descricao }}" required>
+        </div>
+        <div>
+            <label for="preco">preco:</label>
+            <input type="number" id="preco" name="preco" step="0.01" placeholder="{{ produto.pro_preco }}">
+        </div>
+        <div>
+            <label for="estoque">Estoque:</label>
+            <input type="number" id="estoque" name="estoque" placeholder="{{ produto.pro_estoque }}">
+        </div>
         
         <button type="submit">Salvar Alterações</button>
     </form>
+</main>
 {% endblock %}
