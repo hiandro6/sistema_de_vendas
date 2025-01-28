@@ -1,0 +1,28 @@
+{% extends "model.html" %}
+
+{% block title %}
+    relatórios avançados
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <h2>produtos não vendidos no últimos
+         <form action="" method="post">
+            <select name="" id=""></select>
+         </form>
+         dias
+    </h2>
+    <ol>
+        {% for produto in produtos %}
+            <li>{{produto.pro_nome}} | preço: {{produto.pro_preco}} |quantidade em estoque {{produto.pro_estoque}}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+{% endblock %}

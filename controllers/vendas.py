@@ -166,45 +166,54 @@ def edit(venda_id):
 
 @venda_bp.route('/remove/<int:venda_id>', methods=['POST', 'GET'])
 def remove(venda_id):
+    print('ENTROU NA ROTA')
     # Buscar a venda para verificar se existe
-    # venda_sql = text("SELECT * FROM tb_vendas WHERE ven_id = :venda_id")
-    # venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
-    venda = Venda.find(id = venda_id)
-
+    venda_sql = text("SELECT * FROM tb_vendas WHERE ven_id = :venda_id")
+    venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
+    # venda = Venda.find(id = venda_id)
+    venda_produto = VendaProdutos.find(vpr_id = venda_id)
     if not venda:
         return f"Erro: Venda com ID {venda_id} não encontrada.", 404
 
     try:
         # Buscar os produtos associados à venda
         venda_produtos_sql = text("""
-            SELECT vp.vpr_pro_id, vp.vpr_quantproduto
-            FROM tb_vendas_produtos vp
-            WHERE vp.vpr_ven_id = :venda_id
+            SELECT vpr_pro_id, vpr_quantproduto
+            FROM tb_vendas_produtos
+            WHERE vpr_ven_id = :venda_id
         """)
+        print('vai pegar venda_produtos')
         venda_produtos = session.execute(venda_produtos_sql, {"venda_id": venda_id}).fetchall()
+        print('pegou quem é venda_produtos')
 
         # Restaurar o estoque dos produtos
         for produto in venda_produtos:
             produto_id = produto.vpr_pro_id
             quantidade_vendida = produto.vpr_quantproduto
+            print('pegou os valores')
 
             # Buscar o estoque atual do produto
             estoque_atual_sql = text("SELECT pro_estoque FROM tb_produtos WHERE pro_id = :produto_id")
             estoque_atual = session.execute(estoque_atual_sql, {"produto_id": produto_id}).scalar()
-
+            print('pegou estoque atual')
             # Atualizar o estoque
+            print(estoque_atual,quantidade_vendida)
             novo_estoque = estoque_atual + quantidade_vendida
+            print('fez a soma')
             update_estoque_sql = text("UPDATE tb_produtos SET pro_estoque = :novo_estoque WHERE pro_id = :produto_id")
             session.execute(update_estoque_sql, {"novo_estoque": novo_estoque, "produto_id": produto_id})
+            print('tirou do estoque')
 
         # Deletar os produtos associados à venda
         delete_venda_produtos_sql = text("DELETE FROM tb_vendas_produtos WHERE vpr_ven_id = :venda_id")
         session.execute(delete_venda_produtos_sql, {"venda_id": venda_id})
-
-        # Deletar a venda
-        delete_venda_sql = text("DELETE FROM tb_vendas WHERE ven_id = :venda_id")
-        session.execute(delete_venda_sql, {"venda_id": venda_id})
-
+        print('DELETOU A VENDA PRODUTOS')
+        # session.delete(venda_produto)
+        
+        # delete_venda_sql = text("DELETE FROM tb_vendas WHERE ven_id = :venda_id")
+        # session.execute(delete_venda_sql, {"venda_id": venda_id})
+        session.delete(venda)
+        print('DELETOU A VENDA')
         # Confirmar as alterações no banco de dados
         session.commit()
 
