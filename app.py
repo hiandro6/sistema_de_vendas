@@ -4,6 +4,7 @@ from database import Base
 from controllers.clientes import login_manager, cliente_bp
 from controllers.produtos import produto_bp
 from controllers.vendas import venda_bp
+from controllers.relatorios import relatorio_bp
 # from models.clientes import Clientes
 # from models.produtos import Produtos
 # from models.vendas import Vendas
@@ -25,6 +26,7 @@ with app.app_context():
 app.register_blueprint(cliente_bp)
 app.register_blueprint(produto_bp)
 app.register_blueprint(venda_bp)
+app.register_blueprint(relatorio_bp)
 
 @app.route('/')
 def index():

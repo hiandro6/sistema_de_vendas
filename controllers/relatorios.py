@@ -43,4 +43,5 @@ WHERE pro_id NOT IN (
     except Exception as e:
         print(f"Erro ao gerar relatório: {str(e)}", "error")
         flash(f"Erro ao gerar relatório: {str(e)}", "error")
-    return render_template("relatorios/filtros.html", produtos = consulta)
+    finally:
+        return render_template("relatorios/filtros.html", produtos = consulta)
