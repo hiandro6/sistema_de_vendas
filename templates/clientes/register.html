@@ -6,11 +6,18 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
-<link rel="stylesheet" href="{{ url_for('static', filename='model.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='cli-form.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/cli-form.css') }}">
 {% endblock %}
 
 {% block content %}
+<nav>
+    <div class="links">
+        <a href="{{url_for('index')}}">Início</a>
+        <a href="{{url_for('cliente.login')}}">Login</a>
+        <a style='transform: scale(1.1); background-color: black;'href="{{url_for('cliente.register')}}">Cadastro</a>
+    </div>
+</nav>
 <main>
     <h1>Se Cadastre</h1>
     <form action="{{url_for('cliente.register')}}" method="post" class="formulario register">
