@@ -6,10 +6,18 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/cat.css') }}">
 {% endblock %}
 
 {% block content %}
-
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links">
+        <a href="">blabla</a>
+        <a href="">blablabla</a>
+    </div>
+</nav>
 <div>
     <ol>
         {% for produto in produtos %}
