@@ -18,11 +18,9 @@ class Venda(Base):
     @classmethod
     def find(cls, **kwargs):
         if 'id' in kwargs:
-            sql = text("SELECT * FROM tb_vendas WHERE ven_id = :id")
-            venda = session.execute(sql, {"id": kwargs['id']}).fetchone()
+            return session.query(cls).filter_by(ven_id=kwargs['id']).first() #SELECT * FROM tb_vendas WHERE ven_id = id
         else:
             raise AttributeError('A busca deve ser feita por id.')
-        return venda
 
     @classmethod
     def all(cls, ordem = "crescente"):
