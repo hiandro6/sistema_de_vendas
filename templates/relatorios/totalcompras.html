@@ -4,12 +4,62 @@
     Relatório de Total de Compras por Cliente
 {% endblock %}
 
-{% block content %}
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/relatorios.css') }}">
+<script src="{{ url_for('static', filename='script/menu.js') }}"></script>
+{% endblock %}
 
-<div>
+{% block content %}
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links">
+        
+        <!-- Dropdown Relatórios -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
+            <div class="dropdown-content" id="relatorios-menu">
+                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Vendas -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
+            <div class="dropdown-content" id="vendas-menu">
+                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Produtos -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
+            <div class="dropdown-content" id="produtos-menu">
+                <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
+                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Clientes -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
+            <div class="dropdown-content" id="clientes-menu">
+                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+            </div>
+        </div>
+
+        <a class='sair'href="#">Sair</a>
+    </div>
+</nav>
+<div class="relatorio">
     <h2>Total de Compras por Cliente</h2>
 
-    <form action="{{ url_for('relatorio.totalcompras') }}" method="post">
+    <form action="{{ url_for('relatorio.totalcompras') }}" method="post" class="filtro">
         <label for="data_inicio">Data Início:</label>
         <input type="date" id="data_inicio" name="data_inicio" required>
 
@@ -19,13 +69,16 @@
         <button type="submit">Gerar Relatório</button>
     </form>
 
-    <ol>
+    <ol class="respostas">
         {% if clientes %}
             {% for cliente in clientes %}
-                <li>
-                    {{ cliente.cli_nome }} | 
-                    Quantidade de compras: {{ cliente.quantidade_compras }} |
-                    Total gasto: R$ {{ cliente.total_gasto|round(2) }}
+                <li class="resposta">
+                    <span class="nome">{{ cliente.cli_nome }}</span>
+                    <div class="unidades">
+                        <h2 class="itens" style="font-size: 1.5rem; width: 50%;">{{ cliente.quantidade_compras }} itens</h2>
+                        <div class="divisor"></div>
+                        <p>R${{ cliente.total_gasto|round(2) }} </p>
+                    </div>
                 </li>
             {% endfor %}
         {% else %}
