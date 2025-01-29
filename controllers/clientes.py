@@ -59,12 +59,13 @@ def login():
                     flash("algo deu errado no seu login, tente novamente", "error")
     return render_template('clientes/login.html') 
 
-@cliente_bp.route('/logout', methods=['POST'])
+@cliente_bp.route('/logout', methods=['POST','GET'])
 @login_required
 def logout():
     logout_user()
     flash("logout efetuado com sucesso!", "success")
-    return redirect(url_for('cliente.view'))
+    print('TA ENTRANDO NA FUNCAO')
+    return redirect(url_for('index'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['GET', 'POST'])
 def remove(cli_id):
