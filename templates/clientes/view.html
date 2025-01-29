@@ -1,7 +1,7 @@
 {% extends "model.html" %}
 
 {% block title %}
-clientes cadastrados
+Clientes
 {% endblock %}
 
 {% block head_extras %}
@@ -9,6 +9,7 @@ clientes cadastrados
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='style/clientes.css') }}">
 <script src="{{ url_for('static', filename='script/menu.js') }}"></script>
+<script src="{{ url_for('static', filename='script/dell.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -81,10 +82,11 @@ clientes cadastrados
                     <ul>
                         <li><span style="color: red;">Contato:</span> {{ cliente.cli_telefone }}</li>
                         <li><span style="color: red;">Endereço:</span> {{ cliente.cli_endereco }}</li>
+                        <li><span style="color: red;">ID:</span> {{ cliente.cli_id }}</li>
                     </ul>
                     <div class="acoes">
                         <a href="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}">Editar</a>
-                        <a href="{{ url_for('cliente.remove', cli_id=cliente.cli_id) }}" class="delete">Deletar</a>
+                        <a href="#" onclick="return confirmarDeletar('{{url_for('cliente.remove', cli_id=cliente.cli_id)}}')">Deletar</a>
                     </div>
                 </div>
             {% endif %}

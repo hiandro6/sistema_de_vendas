@@ -181,7 +181,7 @@ nav, .nav-reg{
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 15rem;
+        width: 20rem;
         height: auto;
         padding: 2rem;
         gap: 15px;;

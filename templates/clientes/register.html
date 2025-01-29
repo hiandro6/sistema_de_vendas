@@ -1,7 +1,7 @@
 {% extends "model.html" %}
 
 {% block title %}
-    cadastrar cliente
+    Cadastrar cliente
 {% endblock %}
 
 {% block head_extras %}
@@ -61,20 +61,20 @@
     <form action="{{url_for('cliente.register')}}" method="post" class="formulario register">
         <div>
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="">
+            <input type="text" name="nome" id="" required>
         </div>
         <div>
             <label for="email">Email:</label>
-            <input type="email" name="email" id="">
+            <input type="email" name="email" id="" required>
         </div>
         <div>
             <label for="telefone">Telefone:</label>
-            <input type="number" name="telefone" id="">
+            <input type="number" name="telefone" id="" required>
         
         </div>
         <div>
             <label for="endereco">Endereço:</label>
-            <input type="text" name="endereco" id="">
+            <input type="text" name="endereco" id="" required>
         </div>
     
         <button type="submit">Cadastrar</button>

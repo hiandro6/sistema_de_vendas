@@ -36,12 +36,13 @@ def register():
         telefone = str(telefone)
         user = Cliente.find(email=email)
         if user:
-            flash("usuário já cadastrado!", "warning")
-            return redirect(url_for('cliente.login')) 
+            flash("usuário já cadastrado!", "error")
+            return render_template('clientes/register.html')
         else:
             user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco)
             session.add(user)
             session.commit()
+            flash("Cliente cadastrado com Sucesso", "success")
             return redirect(url_for('cliente.view'))
     return render_template('clientes/register.html') 
 

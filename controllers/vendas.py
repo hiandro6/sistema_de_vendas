@@ -57,6 +57,7 @@ def nova_venda():
             venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
             session.add(venda)
             session.commit()
+            flash("Venda Cadastrada com Sucesso", "success")
         except:
             flash("ocorreu um erro ao cadastrar a venda", "error")
             return redirect(url_for('venda.nova_venda'))
@@ -144,6 +145,7 @@ def edit(venda_id):
 
         # Confirmar as alterações
         session.commit()
+        flash("Venda Editada com Sucesso", "success")
 
         return redirect(url_for('venda.view'))
 

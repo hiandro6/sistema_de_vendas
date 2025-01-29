@@ -37,6 +37,7 @@ def add():
         session.add(novo_produto)
         session.commit()
         #Adcionar flash()
+        flash("Produto Cadastrado com Sucesso", "sucesss")
 
     
     return render_template('produtos/add.html') 
@@ -61,6 +62,7 @@ def edit(pro_id):
             produto.pro_estoque = estoque_produto
             session.commit()
             #flash edição realizada com sucesso
+            flash("Produto Editado com Sucesso", "success")
         else:
             #Adcionar flash() de erro
             pass

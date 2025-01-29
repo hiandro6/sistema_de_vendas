@@ -1,7 +1,7 @@
 {% extends "model.html" %}
 
 {% block title %}
-    produtos cadastrados
+    Produtos
 {% endblock %}
 
 {% block head_extras %}
@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='style/itens.css') }}">
 <script src="{{ url_for('static', filename='script/menu.js') }}"></script>
+<script src="{{ url_for('static', filename='script/dell.js') }}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -82,7 +84,7 @@
                     </div>
                     <div class="links-p">
                         <a href="{{url_for('produtos.edit', pro_id=produto.pro_id)}}">Editar</a>
-                        <a href="{{url_for('produtos.remove', pro_id=produto.pro_id)}}">Deletar</a>
+                        <a href="#" onclick="return confirmarDeletar('{{url_for('produtos.remove', pro_id=produto.pro_id)}}')">Deletar</a>
                     </div>
                 </li> 
             {% endfor %}
