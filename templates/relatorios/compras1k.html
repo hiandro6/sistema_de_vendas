@@ -49,10 +49,11 @@
             <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
             <div class="dropdown-content" id="clientes-menu">
                 <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+                <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
             </div>
         </div>
 
-        <a class='sair'href="#">Sair</a>
+        <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
     </div>
 </nav>
 <div class="relatorio">

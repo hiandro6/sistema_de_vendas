@@ -5,7 +5,7 @@ from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
 from sqlalchemy import text
 from database.config import session
-
+from flask_login import login_required
 
 venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates', url_prefix='/vendas')
 

@@ -17,6 +17,7 @@ def load_user(user_id):
 cliente_bp = Blueprint(name='cliente', import_name=__name__, template_folder='templates', url_prefix='/clientes')
 
 @cliente_bp.route('/', methods=['POST', 'GET'])
+@login_required
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']
@@ -68,6 +69,7 @@ def logout():
     return redirect(url_for('index'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['GET', 'POST'])
+@login_required
 def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
     try:
@@ -83,6 +85,7 @@ def remove(cli_id):
     
 
 @cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
+@login_required
 def edit(cli_id):
     cliente = Cliente.find(id=cli_id)
     if request.method == 'POST':

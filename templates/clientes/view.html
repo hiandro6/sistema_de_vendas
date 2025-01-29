@@ -1,7 +1,7 @@
 {% extends "model.html" %}
 
 {% block title %}
-    clientes cadastrados
+clientes cadastrados
 {% endblock %}
 
 {% block head_extras %}
@@ -15,7 +15,7 @@
 <nav>
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
     <div class="links">
-        
+
         <!-- Dropdown Relatórios -->
         <div class="dropdown">
             <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
@@ -50,9 +50,10 @@
             <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
             <div class="dropdown-content" id="clientes-menu">
                 <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+                <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
             </div>
         </div>
-        <a class='sair'href="{{url_for('cliente.logout')}}">Sair</a>
+        <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
     </div>
 </nav>
 
@@ -71,21 +72,22 @@
     </div>
     <div class="clientes">
         {% for cliente in clientes %}
-        {% if not  %}
-            <div class="cliente">
-                <ul>
-                    <li><span style="color: red;">Nome:</span> {{ cliente.cli_nome }}</li>
-                    <li><span style="color: red;">Email:</span> {{ cliente.cli_email }}</li>
-                </ul>
-                <ul>
-                    <li><span style="color: red;">Contato:</span> {{ cliente.cli_telefone }}</li>
-                    <li><span style="color: red;">Endereço:</span> {{ cliente.cli_endereco }}</li>
-                </ul>
-                <div class="acoes">
-                    <a href="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}">Editar</a>
-                    <a href="{{ url_for('cliente.remove', cli_id=cliente.cli_id) }}" class="delete">Deletar</a>
+            {% if cliente.cli_email != "admin@admin" %}
+                <div class="cliente">
+                    <ul>
+                        <li><span style="color: red;">Nome:</span> {{ cliente.cli_nome }}</li>
+                        <li><span style="color: red;">Email:</span> {{ cliente.cli_email }}</li>
+                    </ul>
+                    <ul>
+                        <li><span style="color: red;">Contato:</span> {{ cliente.cli_telefone }}</li>
+                        <li><span style="color: red;">Endereço:</span> {{ cliente.cli_endereco }}</li>
+                    </ul>
+                    <div class="acoes">
+                        <a href="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}">Editar</a>
+                        <a href="{{ url_for('cliente.remove', cli_id=cliente.cli_id) }}" class="delete">Deletar</a>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endfor %}
     </div>
 </main>

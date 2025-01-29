@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, redirect
 from database.config import engine
 from database import Base
 from controllers.clientes import login_manager, cliente_bp
@@ -32,3 +32,6 @@ app.register_blueprint(relatorio_bp)
 def index():
     return render_template('index.html')
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('cliente.login'))

@@ -5,14 +5,17 @@ from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
 from sqlalchemy import text, func, select, desc
 from database.config import session
+from flask_login import login_required
 
 relatorio_bp = Blueprint(name='relatorio', import_name=__name__, template_folder='templates', url_prefix='/relatorios')
 
 @relatorio_bp.route('/', methods=['GET', 'POST'])
+@login_required
 def filtros():
     return render_template("relatorios/filtros.html")
 
 @relatorio_bp.route('/totalcompras', methods=['GET', 'POST'])
+@login_required
 def totalcompras():
     clientes = []
     if request.method == 'POST':
@@ -56,6 +59,7 @@ def totalcompras():
 
 
 @relatorio_bp.route('/compras1k', methods=['GET', 'POST'])
+@login_required
 def compras1k():
     clientes = []
     if request.method == 'POST':
@@ -93,6 +97,7 @@ def compras1k():
 
 
 @relatorio_bp.route('/top10produtos', methods=['GET', 'POST'])
+@login_required
 def top10produtos():
     dias = request.form.get("dias", type=int, default=7)  # Pega o número de dias selecionado no formulário
     try:
@@ -137,6 +142,7 @@ def top10produtos():
 
 
 @relatorio_bp.route('/naovendidos', methods=['GET', 'POST'])
+@login_required
 def naovendidos():
     consulta = []
     dias = request.form.get("dias", type=int, default=7)

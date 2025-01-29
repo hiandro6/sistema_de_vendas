@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, url_for, request, render_template, flash
 from database.config import session
 from models.produtos import Produto
 from sqlalchemy import text
+from flask_login import login_required
 
 produto_bp = Blueprint(name='produtos', import_name=__name__, template_folder='templates', url_prefix='/produtos')
 
@@ -9,6 +10,7 @@ produto_bp = Blueprint(name='produtos', import_name=__name__, template_folder='t
 #Nome dos formulário pra adcionar produtos: (Linhas 22 até 25)
 
 @produto_bp.route('/', methods=['GET','POST'])
+@login_required
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']
@@ -18,6 +20,7 @@ def view():
     return render_template('produtos/view.html', produtos = produtos)
 
 @produto_bp.route('/add', methods=['GET','POST'])
+@login_required
 def add():
     if request.method == 'POST':
         nome_produto = request.form['nome'] 
@@ -34,6 +37,7 @@ def add():
         
     
 @produto_bp.route('/edit/<int:pro_id>', methods=['GET','POST'])
+@login_required
 def edit(pro_id):
     produto = Produto.find(id=pro_id)
     if request.method == 'POST':
@@ -56,6 +60,7 @@ def edit(pro_id):
         return render_template('produtos/edit.html', produto=produto)
 
 @produto_bp.route('/remove/<int:pro_id>', methods=['POST','GET'])
+@login_required
 def remove(pro_id):
     produto = Produto.find(id=pro_id)
     if produto:
