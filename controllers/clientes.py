@@ -40,6 +40,7 @@ def register():
             user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco)
             session.add(user)
             session.commit()
+            return redirect(url_for('cliente.view'))
     return render_template('clientes/register.html') 
 
 
