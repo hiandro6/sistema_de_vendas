@@ -3,10 +3,51 @@ from models.vendas import Venda
 from models.clientes import Cliente
 from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
-from sqlalchemy import text, func, select
+from sqlalchemy import text, func, select, desc
 from database.config import session
 
 relatorio_bp = Blueprint(name='relatorio', import_name=__name__, template_folder='templates', url_prefix='/relatorios')
+
+@relatorio_bp.route('/', methods=['GET', 'POST'])
+def filtros():
+    return render_template("relatorios/filtros.html")
+
+@relatorio_bp.route('/compras1k', methods=['GET', 'POST'])
+def compras1k():
+    clientes = []
+    if request.method == 'POST':
+        data_inicio = request.form.get("data_inicio")
+        data_fim = request.form.get("data_fim")
+
+        try:
+            # Consulta para encontrar clientes com compras acima de 1000 reais no período selecionado
+            clientes_query = (
+                session.query(Cliente.cli_nome, func.sum(Venda.ven_total).label('total_gasto'))
+                .join(Venda, Cliente.cli_id == Venda.ven_cli_id)
+                .filter(Venda.ven_data.between(data_inicio, data_fim))  # Filtra pelo intervalo de datas
+                .group_by(Cliente.cli_id) 
+                .having(func.sum(Venda.ven_total) > 1000)  # Apenas clientes com compras acima de R$1000,00
+                .order_by(desc('total_gasto'))
+            )
+
+            # Query MySQL equivalente:
+            """
+            SELECT cli_nome, SUM(ven_total) AS total_gasto FROM tb_clientes
+            JOIN tb_vendas ON cli_id = ven_cli_id
+            WHERE ven_data BETWEEN ? AND ?
+            GROUP BY cli_id
+            HAVING total_gasto > 1000
+            ORDER BY total_gasto DESC;
+            """
+
+            clientes = clientes_query.all()
+
+        except Exception as e:
+            print(f"Erro ao gerar relatório de compras acima de 1000: {str(e)}")
+            flash(f"Erro ao gerar relatório de compras acima de 1000: {str(e)}", "error")
+
+    return render_template("relatorios/compras1k.html", clientes=clientes)
+
 
 @relatorio_bp.route('/top10produtos', methods=['GET', 'POST'])
 def top10produtos():

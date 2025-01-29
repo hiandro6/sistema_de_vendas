@@ -1,0 +1,33 @@
+{% extends "model.html" %}
+
+{% block title %}
+    Relatório de Clientes com total de Compras Acima de R$1000,00
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <h2>Clientes com compras acima de R$1000,00</h2>
+
+    <form action="{{ url_for('relatorio.compras1k') }}" method="post">
+        <label for="data_inicio">Data Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio" required>
+
+        <label for="data_fim">Data Fim:</label>
+        <input type="date" id="data_fim" name="data_fim" required>
+
+        <button type="submit">Gerar Relatório</button>
+    </form>
+
+    <ol>
+        {% if clientes %}
+            {% for cliente in clientes %}
+                <li>{{ cliente.cli_nome }} | Total gasto: R$ {{ cliente.total_gasto|round(2) }}</li>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum cliente encontrou-se com compras acima de R$1000,00 nesse período.</p>
+        {% endif %}
+    </ol>
+</div>
+
+{% endblock %}

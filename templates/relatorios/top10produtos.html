@@ -26,7 +26,7 @@
     <ol>
         {% if produtos %}
             {% for produto in produtos %}
-            <li>{{ produto.pro_nome }} | Preço: R$ {{ produto.pro_preco }} | Quantidade em estoque: {{ produto.pro_estoque }}</li>
+            <li>{{ produto.pro_nome }} | quantidade vendida no périodo: {{produto.total_vendido}}</li>
             {% endfor %}
         {% else %}
             <p>Nenhum produto encontrado.</p>
