@@ -8,16 +8,52 @@
 <!-- link pro arquivo css  -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='style/clientes.css') }}">
+<script src="{{ url_for('static', filename='script/menu.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 <nav>
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
-    <div class="links cat">
-        <a href="{{url_for('relatorio.filtros')}}">Relatórios</a>
-        <a href="{{url_for('produtos.view')}}">Produtos</a>
-        <a href="{{url_for('produtos.add')}}">Novo Produto</a>
-        <a href="">Sair</a>
+    <div class="links">
+        
+        <!-- Dropdown Relatórios -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
+            <div class="dropdown-content" id="relatorios-menu">
+                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                <a href="#">Exportar Dados</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Vendas -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
+            <div class="dropdown-content" id="vendas-menu">
+                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Produtos -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
+            <div class="dropdown-content" id="produtos-menu">
+                <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
+                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Clientes -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
+            <div class="dropdown-content" id="clientes-menu">
+                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+            </div>
+        </div>
+
+        <a class='sair'href="#">Sair</a>
     </div>
 </nav>
 

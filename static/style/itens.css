@@ -9,6 +9,7 @@
         justify-content: center;
         flex-wrap: wrap;
         width: 80%;
+        height: auto;
         margin-top: 2rem;
         gap: 1rem;
         /* Ajuste conforme necessário */
@@ -18,8 +19,8 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            height:20rem;
-            width: 20rem;
+            height:18rem;
+            width: 18rem;
             background-color: white;
             border-radius: 10px;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
