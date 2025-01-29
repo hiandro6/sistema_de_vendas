@@ -27,6 +27,12 @@ def add():
         desc_produto = request.form['descricao']
         preco_produto = request.form['preco']
         estoque_produto = request.form['estoque']
+        if float(preco_produto) < 0:
+            flash('Valor inválido','error')
+            return redirect(url_for('produtos.add'))
+        if float(estoque_produto) < 0:
+            flash('Valor inválido','error')
+            return redirect(url_for('produtos.add'))
         novo_produto = Produto(pro_nome = nome_produto, pro_descricao = desc_produto, pro_preco = preco_produto, pro_estoque = estoque_produto)
         session.add(novo_produto)
         session.commit()
@@ -45,6 +51,9 @@ def edit(pro_id):
         desc_produto = request.form['descricao']
         preco_produto = request.form['preco']
         estoque_produto = request.form['estoque']
+        if int(estoque_produto) < 0:
+            flash('Valor inválido','error')
+            return redirect(url_for('produtos.edit',pro_id=pro_id))
         if produto:
             produto.pro_nome = nome_produto
             produto.pro_descricao = desc_produto

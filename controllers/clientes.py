@@ -33,6 +33,7 @@ def register():
         email = request.form['email']
         telefone = request.form['telefone']
         endereco = request.form['endereco']
+        telefone = str(telefone)
         user = Cliente.find(email=email)
         if user:
             flash("usuário já cadastrado!", "warning")
@@ -59,6 +60,8 @@ def login():
                     return redirect(url_for('cliente.view'))
                 except:
                     flash("algo deu errado no seu login, tente novamente", "danger")
+            else:
+                flash("algo deu errado no seu login, tente novamente", "danger")
         else:
             flash("Usuário não cadastrado", "danger")
     return render_template('clientes/login.html') 
@@ -95,8 +98,9 @@ def edit(cli_id):
         if cliente:
             cliente.cli_nome = request.form['nome']
             cliente.cli_email = request.form['email']
-            cliente.cli_telefone = request.form['telefone']
+            cliente.cli_telefone = str(request.form['telefone'])
             cliente.cli_endereco = request.form['endereco']
+
             
             try:
                 session.commit() 

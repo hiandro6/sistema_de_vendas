@@ -48,7 +48,8 @@ def nova_venda():
             estoque_atual = Produto.estoque(nome = produtos[i])
             novo_estoque = estoque_atual - int(quantidades[i]) 
             if novo_estoque < 0:
-                return f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", 400
+                flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
+                redirect(url_for('venda.nova_venda'))
 
             session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
         total = round(total, 2)
