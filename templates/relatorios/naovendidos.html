@@ -13,7 +13,7 @@
 
 <div>
     <h2>Produtos não vendidos nos últimos 
-        <form action="{{ url_for('relatorio.filtros') }}" method="post" style="display:inline;">
+        <form action="{{ url_for('relatorio.naovendidos') }}" method="post" style="display:inline;">
             <select name="dias" id="dias" onchange="this.form.submit()">
                 <option value="7" {% if request.form.get('dias') == '7' %}selected{% endif %}>7</option>
                 <option value="30" {% if request.form.get('dias') == '30' %}selected{% endif %}>30</option>

@@ -52,8 +52,8 @@ def top10produtos():
     return render_template("relatorios/top10produtos.html", produtos=top_produtos, dias=dias)
 
 
-@relatorio_bp.route('/', methods=['GET', 'POST'])
-def filtros():
+@relatorio_bp.route('/naovendidos', methods=['GET', 'POST'])
+def naovendidos():
     consulta = []
     dias = request.form.get("dias", type=int, default=7)
     result = []
@@ -109,5 +109,5 @@ WHERE pro_id NOT IN (
         print(f"Erro ao gerar relatório: {str(e)}", "error")
         flash(f"Erro ao gerar relatório: {str(e)}", "error")
     finally:
-        return render_template("relatorios/filtros.html", produtos=result)
+        return render_template("relatorios/naovendidos.html", produtos=result)
     
