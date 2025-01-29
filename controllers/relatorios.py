@@ -8,6 +8,50 @@ from database.config import session
 
 relatorio_bp = Blueprint(name='relatorio', import_name=__name__, template_folder='templates', url_prefix='/relatorios')
 
+@relatorio_bp.route('/top10produtos', methods=['GET', 'POST'])
+def top10produtos():
+    dias = request.form.get("dias", type=int, default=7)  # Pega o número de dias selecionado no formulário
+    try:
+        # Subquery para contar o total de produtos vendidos nos últimos X dias
+        subquery = (
+            session.query(VendaProdutos.vpr_pro_id, func.sum(VendaProdutos.vpr_quantproduto).label('total_vendido'))
+            .join(Venda, VendaProdutos.vpr_ven_id == Venda.ven_id)
+            .filter(Venda.ven_data >= func.date('now', f'-{dias} days'))  # Filtra pela data de venda
+            .group_by(VendaProdutos.vpr_pro_id)
+            .subquery()
+        )
+
+        # Consulta principal para pegar os 10 produtos mais vendidos
+        top_produtos_query = (
+            session.query(Produto.pro_nome, Produto.pro_preco, Produto.pro_estoque, subquery.c.total_vendido)
+            .join(subquery, Produto.pro_nome == subquery.c.vpr_pro_id)
+            .order_by(subquery.c.total_vendido.desc())
+            .limit(10)
+        )
+
+        #query em mysql
+        """SELECT pro_nome, SUM(vpr_quantproduto) AS total_vendido FROM tb_produtos JOIN tb_vendas_produtos 
+        ON pro_id = vpr_pro_id
+        JOIN tb_vendas 
+        ON vpr_ven_id = ven_id
+        WHERE ven_data >= CURDATE() - INTERVAL ? DAY
+        GROUP BY pro_id
+        ORDER BY total_vendido DESC
+        LIMIT 10;"""
+
+        # Executar a consulta
+        top_produtos = top_produtos_query.all()
+
+        print(f"Top 10 produtos mais vendidos nos últimos {dias} dias:", top_produtos)
+
+    except Exception as e:
+        print(f"Erro ao gerar relatório de top 10 produtos: {str(e)}", "error")
+        flash(f"Erro ao gerar relatório de top 10 produtos: {str(e)}", "error")
+        top_produtos = []
+
+    return render_template("relatorios/top10produtos.html", produtos=top_produtos, dias=dias)
+
+
 @relatorio_bp.route('/', methods=['GET', 'POST'])
 def filtros():
     consulta = []
@@ -66,3 +110,4 @@ WHERE pro_id NOT IN (
         flash(f"Erro ao gerar relatório: {str(e)}", "error")
     finally:
         return render_template("relatorios/filtros.html", produtos=result)
+    

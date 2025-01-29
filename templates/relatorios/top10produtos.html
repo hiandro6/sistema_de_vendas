@@ -1,0 +1,39 @@
+{% extends "model.html" %}
+
+{% block title %}
+    relatórios avançados
+{% endblock %}
+
+{% block head_extras %}
+<!-- link pro arquivo css  -->
+{% endblock %}
+
+{% block content %}
+
+
+<div>
+    <h2>top 10 produtos mais vendidos nos últimos 
+        <form action="{{ url_for('relatorio.top10produtos') }}" method="post" style="display:inline;">
+            <select name="dias" id="dias" onchange="this.form.submit()">
+                <option value="7" {% if request.form.get('dias') == '7' %}selected{% endif %}>7</option>
+                <option value="30" {% if request.form.get('dias') == '30' %}selected{% endif %}>30</option>
+                <option value="60" {% if request.form.get('dias') == '60' %}selected{% endif %}>60</option>
+                <option value="90" {% if request.form.get('dias') == '90' %}selected{% endif %}>90</option>
+            </select>
+        </form>
+        dias
+    </h2>
+    <ol>
+        {% if produtos %}
+            {% for produto in produtos %}
+            <li>{{ produto.pro_nome }} | Preço: R$ {{ produto.pro_preco }} | Quantidade em estoque: {{ produto.pro_estoque }}</li>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum produto encontrado.</p>
+        {% endif %}
+    </ol>
+</div>
+
+
+
+{% endblock %}
