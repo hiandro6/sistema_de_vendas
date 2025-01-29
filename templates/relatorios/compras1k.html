@@ -22,7 +22,7 @@
     <ol>
         {% if clientes %}
             {% for cliente in clientes %}
-                <li>{{ cliente.cli_nome }} | Total gasto: R$ {{ cliente.total_gasto|round(2) }}</li>
+                <li>{{ cliente.cli_nome }} | valor da compra: R$ {{ cliente.total_gasto|round(2) }} data da compra: {{cliente.ven_data}}</li>
             {% endfor %}
         {% else %}
             <p>Nenhum cliente encontrou-se com compras acima de R$1000,00 nesse período.</p>

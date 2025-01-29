@@ -65,10 +65,10 @@ def compras1k():
         try:
             # Consulta para encontrar clientes com compras acima de 1000 reais no período selecionado
             clientes_query = (
-                session.query(Cliente.cli_nome, func.sum(Venda.ven_total).label('total_gasto'))
+                session.query(Cliente.cli_nome, Venda.ven_data, func.sum(Venda.ven_total).label('total_gasto'))
                 .join(Venda, Cliente.cli_id == Venda.ven_cli_id)
                 .filter(Venda.ven_data.between(data_inicio, data_fim))  # Filtra pelo intervalo de datas
-                .group_by(Cliente.cli_id) 
+                .group_by(Venda.ven_id) 
                 .having(func.sum(Venda.ven_total) > 1000)  # Apenas clientes com compras acima de R$1000,00
                 .order_by(desc('total_gasto'))
             )
