@@ -23,7 +23,6 @@ nav, .nav-reg{
     border-radius: 10px;
     width: 20vw;
     height: 100%;
-    margin: 1rem;
     gap: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
@@ -62,6 +61,12 @@ nav, .nav-reg{
             padding: 5px 10px;
             color: white;
         }
+    }
+
+    .links.login{
+        display: flex;
+        flex-direction: row;
+        width: 10;
     }
 }
 
@@ -199,3 +204,7 @@ nav, .nav-reg{
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
     }
+
+#login-nav{
+    margin-top: 1rem;
+}

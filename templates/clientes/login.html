@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block content %}
-<nav>
-    <div class="links">
+<nav id="login-nav">
+    <div class="links login">
         <a href="{{url_for('index')}}">Início</a>
         <a style='transform: scale(1.1); background-color: black;'href="{{url_for('cliente.login')}}">Login</a>
     </div>

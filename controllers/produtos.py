@@ -68,5 +68,5 @@ def remove(pro_id):
         sql = text(f"DELETE FROM tb_produtos WHERE pro_id = {produto.pro_id}")
         session.execute(sql)
         session.commit()
-        #adcionar flash() confirmando o delete
+        flash('produto deletado')
     return redirect(url_for('produtos.view'))
