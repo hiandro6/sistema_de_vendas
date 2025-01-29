@@ -89,7 +89,7 @@ def edit(venda_id):
         venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
 
         if not venda:
-            return f"Erro: Venda com ID {venda_id} não encontrada.", 404
+            flash(f"Erro: Venda com ID {venda_id} não encontrada.", 404)
 
         # Atualizar a venda
         update_venda_sql = text("UPDATE tb_vendas SET ven_data = :data WHERE ven_id = :venda_id")
@@ -112,7 +112,7 @@ def edit(venda_id):
             estoque_atual = session.execute(estoque_atual_sql, {"produto_nome": produto_nome}).scalar()
 
             if estoque_atual < quantidade:
-                return f"Erro: Estoque insuficiente para o produto '{produto_nome}'.", 400
+                flash(f"Erro: Estoque insuficiente para o produto '{produto_nome}'.", 400)
 
             novo_estoque = estoque_atual - quantidade
             update_estoque_sql = text("UPDATE tb_produtos SET pro_estoque = :novo_estoque WHERE pro_nome = :produto_nome")
@@ -152,7 +152,7 @@ def edit(venda_id):
         venda = session.execute(venda_sql, {"venda_id": venda_id}).fetchone()
 
         if not venda:
-            return f"Erro: Venda com ID {venda_id} não encontrada.", 404
+            flash(f"Erro: Venda com ID {venda_id} não encontrada.", 404) 
 
         venda_produtos_sql = text("""
             SELECT vp.vpr_quantproduto, p.pro_nome 
@@ -173,7 +173,7 @@ def remove(venda_id):
     # venda = Venda.find(id = venda_id)
 
     if not venda:
-        return f"Erro: Venda com ID {venda_id} não encontrada.", 404
+        flash(f"Erro: Venda com ID {venda_id} não encontrada.", 404)
 
     try:
         # Buscar os produtos associados à venda
@@ -197,6 +197,7 @@ def remove(venda_id):
 
             if not produto_info:
                 print(f"Erro: Produto '{produto_nome}' não encontrado na tabela 'tb_produtos'.")
+                flash(f"Erro: Produto '{produto_nome}' não encontrado na tabela 'tb_produtos'.")
                 continue
             
             produto_id = produto_info.pro_id

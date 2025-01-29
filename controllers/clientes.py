@@ -61,7 +61,7 @@ def login():
     return render_template('clientes/login.html') 
 
 @cliente_bp.route('/logout', methods=['POST','GET'])
-@login_required
+
 def logout():
     logout_user()
     flash("logout efetuado com sucesso!", "success")
@@ -69,7 +69,7 @@ def logout():
     return redirect(url_for('index'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['GET', 'POST'])
-@login_required
+
 def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
     try:
@@ -85,7 +85,7 @@ def remove(cli_id):
     
 
 @cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
-@login_required
+
 def edit(cli_id):
     cliente = Cliente.find(id=cli_id)
     if request.method == 'POST':
@@ -99,7 +99,7 @@ def edit(cli_id):
                 session.commit() 
                 flash("Edição realizada com sucesso!", "success")
             except: #se não conseguir dar o commit
-                session.rollback()  # reverte as alterações em caso de erro
+                # session.rollback()  # reverte as alterações em caso de erro
                 flash("Algo deu errado ao salvar as alterações, tente novamente.", "error")
         else:
             flash("Cliente não encontrado.", "error")
