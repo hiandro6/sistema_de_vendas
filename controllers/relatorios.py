@@ -12,6 +12,49 @@ relatorio_bp = Blueprint(name='relatorio', import_name=__name__, template_folder
 def filtros():
     return render_template("relatorios/filtros.html")
 
+@relatorio_bp.route('/totalcompras', methods=['GET', 'POST'])
+def totalcompras():
+    clientes = []
+    if request.method == 'POST':
+        data_inicio = request.form.get("data_inicio")
+        data_fim = request.form.get("data_fim")
+
+        try:
+            # Consulta para contar o total de compras por cliente no período
+            clientes_query = (
+                session.query(
+                    Cliente.cli_nome,
+                    func.count(Venda.ven_id).label('quantidade_compras'),
+                    func.sum(Venda.ven_total).label('total_gasto')
+                )
+                .join(Venda, Cliente.cli_id == Venda.ven_cli_id)
+                .filter(Venda.ven_data.between(data_inicio, data_fim))  # Filtra pelo intervalo de datas
+                .group_by(Cliente.cli_id)
+                .order_by(desc('quantidade_compras'))  # Ordena pelo número de compras
+            )
+
+            # Query MySQL equivalente:
+            """
+            SELECT cli_nome, 
+                   COUNT(ven_id) AS quantidade_compras, 
+                   SUM(ven_total) AS total_gasto
+            FROM tb_clientes
+            JOIN tb_vendas ON cli_id = ven_cli_id
+            WHERE ven_data BETWEEN ? AND ?
+            GROUP BY cli_id
+            ORDER BY quantidade_compras DESC;
+            """
+
+
+            clientes = clientes_query.all()
+
+        except Exception as e:
+            print(f"Erro ao gerar relatório de total de compras por cliente: {str(e)}")
+            flash(f"Erro ao gerar relatório de total de compras por cliente: {str(e)}", "error")
+
+    return render_template("relatorios/totalcompras.html", clientes=clientes)
+
+
 @relatorio_bp.route('/compras1k', methods=['GET', 'POST'])
 def compras1k():
     clientes = []

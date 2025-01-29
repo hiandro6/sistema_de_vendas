@@ -1,0 +1,37 @@
+{% extends "model.html" %}
+
+{% block title %}
+    Relatório de Total de Compras por Cliente
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <h2>Total de Compras por Cliente</h2>
+
+    <form action="{{ url_for('relatorio.totalcompras') }}" method="post">
+        <label for="data_inicio">Data Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio" required>
+
+        <label for="data_fim">Data Fim:</label>
+        <input type="date" id="data_fim" name="data_fim" required>
+
+        <button type="submit">Gerar Relatório</button>
+    </form>
+
+    <ol>
+        {% if clientes %}
+            {% for cliente in clientes %}
+                <li>
+                    {{ cliente.cli_nome }} | 
+                    Quantidade de compras: {{ cliente.quantidade_compras }} |
+                    Total gasto: R$ {{ cliente.total_gasto|round(2) }}
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>Nenhuma compra encontrada no período selecionado.</p>
+        {% endif %}
+    </ol>
+</div>
+
+{% endblock %}
