@@ -6,14 +6,60 @@
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/relatorios.css') }}">
+<script src="{{ url_for('static', filename='script/menu.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
+<nav>
+    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <div class="links">
+        
+        <!-- Dropdown Relatórios -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
+            <div class="dropdown-content" id="relatorios-menu">
+                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+            </div>
+        </div>
 
-<div>
+        <!-- Dropdown Vendas -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
+            <div class="dropdown-content" id="vendas-menu">
+                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Produtos -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
+            <div class="dropdown-content" id="produtos-menu">
+                <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
+                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Clientes -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
+            <div class="dropdown-content" id="clientes-menu">
+                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+            </div>
+        </div>
+
+        <a class='sair'href="#">Sair</a>
+    </div>
+</nav>
+<div class="relatorio">
     <h2>Produtos não vendidos nos últimos 
-        <form action="{{ url_for('relatorio.naovendidos') }}" method="post" style="display:inline;">
+        <form action="{{ url_for('relatorio.naovendidos') }}" method="post" style="display:inline;" class="filtro dias">
             <select name="dias" id="dias" onchange="this.form.submit()">
                 <option value="7" {% if request.form.get('dias') == '7' %}selected{% endif %}>7</option>
                 <option value="30" {% if request.form.get('dias') == '30' %}selected{% endif %}>30</option>
@@ -23,11 +69,19 @@
         </form>
         dias
     </h2>
-    <ol>
+    <ol class="respostas">
         {% if produtos %}
             {% for produto in produtos %}
-            <li>{{ produto.pro_nome }} | Preço: R$ {{ produto.pro_preco }} | Quantidade em estoque: {{ produto.pro_estoque }}</li>
-            {% endfor %}
+                <li class="resposta">
+                    <span class="nome-produto">{{ produto.pro_nome }}</span>
+                    <span class="preco">R${{ produto.pro_preco }}</span>
+                    <div class="unidades">
+                        <h2>{{ produto.pro_estoque }}</h2>
+                        <div class="divisor"></div>
+                        <p>Em estoque</p>
+                    </div>
+                </li>            
+            {%endfor%}
         {% else %}
             <p>Nenhum produto encontrado.</p>
         {% endif %}

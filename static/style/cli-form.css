@@ -1,16 +1,25 @@
+body{
+    display: flex;
+    flex-direction: column  ;
+}
+
 nav{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
+    background-color: transparent;
+    box-shadow: none;
     height: 60px;
 
     .links{
         display: flex;
+        flex-direction: row;
         justify-content: space-around;
         background-color: white;
         border-radius: 10px;
         width: 20rem;
+        height: auto;
         padding: 0.5em;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
