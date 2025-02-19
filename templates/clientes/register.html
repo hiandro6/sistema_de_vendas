@@ -16,25 +16,26 @@
     <div class="links">
         
         <!-- Dropdown Relatórios -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
-            <div class="dropdown-content" id="relatorios-menu">
-                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
-                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
-                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
-                <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+        {% if current_user.cli_id == 1 %}
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
+                <div class="dropdown-content" id="relatorios-menu">
+                    <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                    <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                    <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                    <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+                </div>
             </div>
-        </div>
-
-        <!-- Dropdown Vendas -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
-            <div class="dropdown-content" id="vendas-menu">
-                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
-                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+    
+            <!-- Dropdown Vendas -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
+                <div class="dropdown-content" id="vendas-menu">
+                    <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                    <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+                </div>
             </div>
-        </div>
-
+        {% endif %}
         <!-- Dropdown Produtos -->
         <div class="dropdown">
             <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
@@ -43,16 +44,16 @@
                 <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
             </div>
         </div>
-
-        <!-- Dropdown Clientes -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
-            <div class="dropdown-content" id="clientes-menu">
-                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
-                <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+        {% if current_user.cli_id == 1 %}
+            <!-- Dropdown Clientes -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
+                <div class="dropdown-content" id="clientes-menu">
+                    <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+                    <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+                </div>
             </div>
-        </div>
-
+        {% endif %}
         <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
     </div>
 </nav>
