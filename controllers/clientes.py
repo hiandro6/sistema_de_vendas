@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, request, render_template, flash
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_required, login_user, logout_user
 
 from models.clientes import Cliente
@@ -7,6 +7,8 @@ from models.clientes import Cliente
 from database.config import session
 
 from sqlalchemy import text
+
+from decorators.role import role_required
 
 login_manager = LoginManager()
 
@@ -31,15 +33,18 @@ def register():
     if request.method == 'POST':
         nome = request.form['nome']
         email = request.form['email']
+        senha = request.form['senha']
+        senha = generate_password_hash(senha)
         telefone = request.form['telefone']
         endereco = request.form['endereco']
         telefone = str(telefone)
+        tipo = 'comum'
         user = Cliente.find(email=email)
         if user:
             flash("usuário já cadastrado!", "error")
             return render_template('clientes/register.html')
         else:
-            user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco)
+            user = Cliente(cli_nome = nome, cli_email = email, cli_telefone = telefone, cli_endereco = endereco, cli_senha = senha, cli_tipo=tipo)
             session.add(user)
             session.commit()
             flash("Cliente cadastrado com Sucesso", "success")

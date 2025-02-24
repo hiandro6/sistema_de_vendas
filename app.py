@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, redirect
+from flask_login import current_user
 from database.config import engine
 from database import Base
 from controllers.clientes import login_manager, cliente_bp
@@ -30,6 +31,8 @@ app.register_blueprint(relatorio_bp)
 
 @app.route('/')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('produtos.view'))
     return render_template('index.html')
 
 @login_manager.unauthorized_handler

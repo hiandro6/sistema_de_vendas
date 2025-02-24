@@ -15,6 +15,8 @@ class Cliente(Base, UserMixin):
     cli_email:Mapped[str] = mapped_column(unique = True, nullable=False)
     cli_telefone:Mapped[str] = mapped_column(nullable=False)
     cli_endereco:Mapped[str] = mapped_column(nullable=False)
+    cli_senha:Mapped[str] = mapped_column(nullable=False)
+    cli_tipo:Mapped[str] = mapped_column(nullable=False)
     vendas: Mapped[list["Venda"]] = relationship("Venda", back_populates="clientes", cascade="all, delete-orphan")
 
 

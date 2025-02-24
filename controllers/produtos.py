@@ -3,6 +3,7 @@ from database.config import session
 from models.produtos import Produto
 from sqlalchemy import text
 from flask_login import login_required
+from decorators.role import role_required
 
 produto_bp = Blueprint(name='produtos', import_name=__name__, template_folder='templates', url_prefix='/produtos')
 
@@ -21,6 +22,7 @@ def view():
 
 @produto_bp.route('/add', methods=['GET','POST'])
 @login_required
+@role_required('admin')
 def add():
     if request.method == 'POST':
         nome_produto = request.form['nome'] 
