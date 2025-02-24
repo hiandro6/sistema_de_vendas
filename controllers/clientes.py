@@ -63,7 +63,9 @@ def login():
             else:
                 flash("algo deu errado no seu login, tente novamente", "danger")
         else:
-            flash("Usuário não cadastrado", "danger")
+            flash("Usuário não cadastrado", "danger")                    
+            return redirect(url_for('cliente.register'))
+
     return render_template('clientes/login.html') 
 
 @cliente_bp.route('/logout', methods=['POST','GET'])
@@ -71,7 +73,6 @@ def login():
 def logout():
     logout_user()
     flash("logout efetuado com sucesso!", "success")
-    print('TA ENTRANDO NA FUNCAO')
     return redirect(url_for('index'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['GET', 'POST'])
