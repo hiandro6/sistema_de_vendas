@@ -35,16 +35,15 @@
                     <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
                 </div>
             </div>
-        {% endif %}
-        <!-- Dropdown Produtos -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
-            <div class="dropdown-content" id="produtos-menu">
-                <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
-                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+  
+            <!-- Dropdown Produtos -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
+                <div class="dropdown-content" id="produtos-menu">
+                    <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
+                </div>
             </div>
-        </div>
-        {% if current_user.cli_id == 1 %}
+
             <!-- Dropdown Clientes -->
             <div class="dropdown">
                 <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
@@ -54,7 +53,7 @@
                 </div>
             </div>
         {% endif %}
-        <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
+        <a class='sair' href="{{url_for('index')}}">Sair</a>
     </div>
 </nav>
 <main class="registermain">
