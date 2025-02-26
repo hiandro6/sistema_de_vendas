@@ -13,7 +13,7 @@ from models.clientes import Cliente
 # from models.vendasprodutos import VendasProdutos
 
 def add_admin():
-    user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = "123", cli_tipo="admin")
+    user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = "admin", cli_tipo="admin")
     session.add(user)
     session.commit()
 

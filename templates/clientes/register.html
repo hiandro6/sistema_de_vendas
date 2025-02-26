@@ -7,55 +7,12 @@
 {% block head_extras %}
 <!-- link pro arquivo css  -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/cli-register.css') }}">
 <script src="/static/script/menu.js"></script>
 {% endblock %}
 
 {% block content %}
-<nav class="nav-reg">
-    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
-    <div class="links">
-        
-        <!-- Dropdown Relatórios -->
-        {% if current_user.cli_id == 1 %}
-            <div class="dropdown">
-                <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
-                <div class="dropdown-content" id="relatorios-menu">
-                    <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
-                    <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
-                    <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
-                    <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
-                </div>
-            </div>
-    
-            <!-- Dropdown Vendas -->
-            <div class="dropdown">
-                <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
-                <div class="dropdown-content" id="vendas-menu">
-                    <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
-                    <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
-                </div>
-            </div>
-  
-            <!-- Dropdown Produtos -->
-            <div class="dropdown">
-                <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
-                <div class="dropdown-content" id="produtos-menu">
-                    <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
-                </div>
-            </div>
 
-            <!-- Dropdown Clientes -->
-            <div class="dropdown">
-                <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
-                <div class="dropdown-content" id="clientes-menu">
-                    <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
-                    <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
-                </div>
-            </div>
-        {% endif %}
-        <a class='sair' href="{{url_for('index')}}">Sair</a>
-    </div>
-</nav>
 <main class="registermain">
     <h1>Cadastrar novo cliente</h1>
     <form action="{{url_for('cliente.register')}}" method="post" class="formulario register">
@@ -83,6 +40,7 @@
     
         <button type="submit">Cadastrar</button>
     </form>
+    <h3><a href="/clientes/login">Já possui cadastro? Clique aqui</a></h3>
 </main>
 
 

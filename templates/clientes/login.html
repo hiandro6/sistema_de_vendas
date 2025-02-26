@@ -11,12 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<nav id="login-nav">
-    <div class="links login">
-        <a href="{{url_for('index')}}">Início</a>
-        <a style='transform: scale(1.1); background-color: black;'href="{{url_for('cliente.login')}}">Login</a>
-    </div>
-</nav>
+<!-- X -->
 <main>
     <h1>Faça seu Login</h1>
     <form action="{{url_for('cliente.login')}}" method="post" class="formulario">
@@ -30,6 +25,7 @@
         </div>
         <button type="submit">Entrar</button>
     </form>
+    <h3><a href="/clientes/register">Ainda não possui cadastro? Clique aqui</a></h3>
 </main>
 
 {% endblock %}

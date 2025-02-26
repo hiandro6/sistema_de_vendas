@@ -1,4 +1,6 @@
 
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
 main {
     width: 100%;
     height: 100vh;
@@ -18,6 +20,7 @@ main {
     h1 {
         font-weight: bolder;
         font-size: 3rem;
+        font-family: 'Playfair Display', serif;
     }
 
     p {
