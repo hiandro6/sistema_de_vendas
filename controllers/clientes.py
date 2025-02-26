@@ -56,10 +56,10 @@ def register():
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        nome = request.form['nome']
+        senha = request.form['senha']
         user = Cliente.find(email=email)
         if user:
-            if nome == user.cli_nome and email == user.cli_email:
+            if email == user.cli_email and check_password_hash(user.cli_senha,senha):
                 try:
                     login_user(user)
                     return redirect(url_for('cliente.view'))

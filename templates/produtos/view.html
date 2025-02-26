@@ -41,6 +41,7 @@
         {% endif %}
         <!-- Dropdown Produtos -->
         <div class="dropdown">
+            <!-- {% if current_user.cli_tipo ==  %} -->
             <button class="dropdown-button" onclick="{{url_for('produtos.view')}}">Produtos</button>
         </div>
         {% if current_user.cli_id == 1 %}

@@ -6,11 +6,16 @@ from controllers.clientes import login_manager, cliente_bp
 from controllers.produtos import produto_bp
 from controllers.vendas import venda_bp
 from controllers.relatorios import relatorio_bp
-# from models.clientes import Clientes
+from database.config import session
+from models.clientes import Cliente
 # from models.produtos import Produtos
 # from models.vendas import Vendas
 # from models.vendasprodutos import VendasProdutos
 
+def add_admin():
+    user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = "123", cli_tipo="admin")
+    session.add(user)
+    session.commit()
 
 app = Flask(__name__)
 
@@ -31,6 +36,7 @@ app.register_blueprint(relatorio_bp)
 
 @app.route('/')
 def index():
+    #add_admin()
     if current_user.is_authenticated:
         return redirect(url_for('produtos.view'))
     return render_template('index.html')
@@ -38,3 +44,4 @@ def index():
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('cliente.login'))
+
