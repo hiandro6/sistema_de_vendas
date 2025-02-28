@@ -99,7 +99,8 @@ def remove(cli_id):
     
 
 @cliente_bp.route('/edit/<int:cli_id>', methods=['POST','GET'])
-
+@login_required
+@role_required('admin')
 def edit(cli_id):
     cliente = Cliente.find(id=cli_id)
     if request.method == 'POST':

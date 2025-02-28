@@ -6,10 +6,13 @@ from models.vendasprodutos import VendaProdutos
 from sqlalchemy import text
 from database.config import session
 from flask_login import login_required
+from decorators.role import role_required
 
 venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates', url_prefix='/vendas')
 
 @venda_bp.route('/', methods=['POST', 'GET'])
+@login_required
+@role_required("admin")
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']
@@ -22,10 +25,19 @@ def view():
     return render_template('vendas/view.html', vendas = vendas)
 
 @venda_bp.route('/nova_venda', methods=['POST', 'GET'])
+@login_required
+@role_required("admin")
 def nova_venda():
     if request.method == 'POST':
         data = request.form['data']
         produtos = request.form.getlist('produtos')
+        print('------------------------',produtos)
+        if len(produtos) == 1 and '' in produtos:
+            flash('Insira ao menos 1 produto')
+            return redirect(url_for('venda.nova_venda'))
+        elif '' in produtos:
+            flash('Preencha os campos de nome dos produtos')
+            return redirect(url_for('venda.nova_venda'))
         quantidades = request.form.getlist('quantidades')
 
         info_cliente = request.form['id_cliente']
@@ -79,6 +91,8 @@ def nova_venda():
     
 
 @venda_bp.route('/edit/<int:venda_id>', methods=['POST', 'GET'])
+@login_required
+@role_required("admin")
 def edit(venda_id):
     if request.method == 'POST':
         # Coletar dados do formulário
@@ -168,6 +182,8 @@ def edit(venda_id):
         return render_template('vendas/edit.html', venda=venda, venda_produtos=venda_produtos, produtos=Produto.all())
 
 @venda_bp.route('/remove/<int:venda_id>', methods=['POST', 'GET'])
+@login_required
+@role_required("admin")
 def remove(venda_id):
 
     # Buscar a venda para verificar se existe
