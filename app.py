@@ -45,3 +45,6 @@ def index():
 def unauthorized():
     return redirect(url_for('cliente.login'))
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404

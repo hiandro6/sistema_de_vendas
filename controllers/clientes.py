@@ -20,6 +20,7 @@ cliente_bp = Blueprint(name='cliente', import_name=__name__, template_folder='te
 
 @cliente_bp.route('/', methods=['POST', 'GET'])
 @login_required
+@role_required('admin')
 def view():
     if request.method == 'POST':
         ordem = request.form['ordem']
@@ -48,7 +49,7 @@ def register():
             session.add(user)
             session.commit()
             flash("Cliente cadastrado com Sucesso", "success")
-            return redirect(url_for('cliente.view'))
+            return redirect(url_for('produtos.view'))
     return render_template('clientes/register.html') 
 
 
@@ -62,7 +63,7 @@ def login():
             if email == user.cli_email and check_password_hash(user.cli_senha,senha):
                 try:
                     login_user(user)
-                    return redirect(url_for('cliente.view'))
+                    return redirect(url_for('produtos.view'))
                 except:
                     flash("algo deu errado no seu login, tente novamente", "danger")
             else:
@@ -74,14 +75,15 @@ def login():
     return render_template('clientes/login.html') 
 
 @cliente_bp.route('/logout', methods=['POST','GET'])
-
+@login_required
 def logout():
     logout_user()
     flash("logout efetuado com sucesso!", "success")
     return redirect(url_for('index'))
 
 @cliente_bp.route('/remove/<int:cli_id>', methods=['GET', 'POST'])
-
+@login_required
+@role_required('admin')
 def remove(cli_id):
     cliente = Cliente.find(id=cli_id)
     try:

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Não Encontrada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/404.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Espaço para imagem -->
+        <div class="image-container">
+            <img src="../static/assets/cliqueconta.png" alt="Logo do CliqueCompra" alt="Página não encontrada">
+        </div>
+
+        <!-- Mensagem centralizada -->
+        <div class="message">
+            <h1>Oops! Página não encontrada.</h1>
+            <p>Desculpe, a página que você procura não existe ou foi movida.</p>
+        </div>
+
+        <!-- Botão para voltar para a página inicial -->
+        <div class="back-button">
+            <a href="/" class="btn">Voltar para o início</a>
+        </div>
+    </div>
+</body>
+</html>
