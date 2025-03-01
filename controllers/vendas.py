@@ -51,7 +51,8 @@ def nova_venda():
             preco_sql = text("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome")
             preco = session.execute(preco_sql, {"nome": produtos[i]}).scalar()
             if preco is None:
-                return f"Erro: O produto '{produtos[i]}' não foi encontrado no banco de dados.", 400
+                flash(f"Erro: O produto '{produtos[i]}' não foi encontrado no banco de dados.","error")
+                return redirect(url_for('venda.nova_venda'))
             preco = float(preco)
 
             total += preco * int(quantidades[i])
@@ -61,7 +62,7 @@ def nova_venda():
             novo_estoque = estoque_atual - int(quantidades[i]) 
             if novo_estoque < 0:
                 flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
-                redirect(url_for('venda.nova_venda'))
+                return redirect(url_for('venda.nova_venda'))
 
             session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
         total = round(total, 2)

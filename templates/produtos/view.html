@@ -86,8 +86,7 @@ Produtos
                 <div id="divisor"></div>
                 <h2 id="estoque"><span style="color: red;">{{produto.pro_estoque}}</span> unidades disponíveis</h2>
             </div>
-            {% if not produtos %}
-            <!-- substituir pelo if de verificação de adm -->
+            {%  if current_user.cli_tipo == 'admin'  %}
             <div class="links-p">
                 <a href="{{url_for('produtos.edit', pro_id=produto.pro_id)}}">Editar</a>
                 <a href="#"
