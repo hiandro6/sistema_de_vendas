@@ -52,9 +52,14 @@ def register():
             return redirect(url_for('produtos.view'))
     return render_template('clientes/register.html') 
 
+# ----> login do adm email=admin@admin    senha = 123
+# ----> login do adm email=admin@admin    senha = 123
+# ----> login do adm email=admin@admin    senha = 123
+# ----> login do adm email=admin@admin    senha = 123
+# ----> login do adm email=admin@admin    senha = 123
 
 @cliente_bp.route('/login', methods=['POST', 'GET'])
-def login():
+def login(): 
     if request.method == 'POST':
         email = request.form['email']
         senha = request.form['senha']
