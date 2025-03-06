@@ -10,8 +10,8 @@
 body{
     display: flex;  
     min-width: 100vw;
-    height: 100%;
-    background-color: #FFFFF0;
+    min-height: 100vh;
+    background-color: #FFFFFF;
 }
 
 nav, .nav-reg{
@@ -19,10 +19,9 @@ nav, .nav-reg{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    border-radius: 10px;
+    background-color: #ECF0F1;
     width: 20vw;
-    height: 100%;
+    height: 100vh;
     gap: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
@@ -31,36 +30,75 @@ nav, .nav-reg{
         margin-top: 1rem;
     }
 
+
     .links{
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: space-between;
         width: 10rem;
         height: 100vh;
-        padding: 0.5em;
-        gap: 0.5rem;
+        padding: 2em;
 
-        .dropdown-button{
-            color: white;
-            background-color: red;
+        .links-nav{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dropdown-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2C3E50;
+            background-color: #F1C40F;
             border-radius: 5px;
-            width: 6rem;
+            width: 7rem;
             padding: 5px;
             border: none;
-            font-size: 1rem;            
-        }
-
-        .dropdown-button:hover{
-            cursor: pointer;
+            font-size: 1rem;
+            transition: 
+                background-color 0.3s ease-in-out, 
+                transform 0.3s ease-in-out, 
+                box-shadow 0.3s ease-in-out,
+                color 0.3s ease-in-out;
         }
         
-        .sair{
-            text-decoration: none;
-            background-color: black;
-            border-radius: 5px;
-            padding: 5px 10px;
+        .dropdown-button:hover {
+            background-color: #b89a23;
             color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95); 
+            cursor: pointer
         }
+        
+        
+        .sair {
+            text-decoration: none;
+            background-color: transparent;
+            border-radius: 5px;
+            padding: 5px;
+            width: 6rem;
+            text-align: center;
+            color: rgb(0, 0, 0);
+            border: 1px solid black;
+            transition: 
+                background-color 0.3s ease-in-out, 
+                color 0.3s ease-in-out, 
+                box-shadow 0.3s ease-in-out, 
+                transform 0.3s ease-in-out, 
+                border 0.3s ease-in-out;
+        }
+        
+        .sair:hover {
+            background-color: #2C3E50;
+            color: white;
+            border: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9);
+        }
+        
+        
     }
 
     .links.login{
@@ -96,7 +134,7 @@ nav, .nav-reg{
         }
 
         .dropdown-content a:hover {
-            color: red;
+            color: #395f86;
             opacity: 90%;
         }
 
@@ -112,22 +150,54 @@ nav, .nav-reg{
     }
 }
 
-.filtro{
+aside{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40rem;
+    padding: 3rem;
+}
+
+.titlepage{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    h1 {
+        line-height: 7rem;
+        font-size: 3.5rem;
+        max-width: 20rem; /* Define um limite para a largura */
+        word-break: break-word;
+    };
+
+    i{
+        font-size: 4rem;
+    }   
+
+}
+
+
+.filtro{
+    display: flex;
+    align-items: center;
     margin: 1rem;
     background-color: white;
     padding: 1rem;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    width: 10rem;
-    height: 8rem;
+    width: auto;
+    height: 5rem;
     gap: 0.5rem;
 
     form{
         display: flex;
-        flex-direction: column;
         gap: 0.5rem;
+        height: 2rem;
+
+        select{
+            border-radius: 5px;
+        }
     }
 
     button{
