@@ -8,14 +8,20 @@ from controllers.vendas import venda_bp
 from controllers.relatorios import relatorio_bp
 from database import session
 from models.clientes import Cliente
+from werkzeug.security import generate_password_hash
 # from models.produtos import Produtos
 # from models.vendas import Vendas
 # from models.vendasprodutos import VendasProdutos
 
 def add_admin():
-    user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = "admin", cli_tipo="admin")
-    session.add(user)
-    session.commit()
+    admin_existente = session.query(Cliente).filter(Cliente.cli_email == "admin@admin").first()
+    print(admin_existente)
+    if not admin_existente:
+        user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = generate_password_hash("123"), cli_tipo="admin")
+        session.add(user)
+        session.commit()
+    else:
+        pass
 
 app = Flask(__name__)
 
@@ -36,7 +42,7 @@ app.register_blueprint(relatorio_bp)
 
 @app.route('/')
 def index():
-    #add_admin()
+    add_admin()
     if current_user.is_authenticated:
         return redirect(url_for('produtos.view'))
     return render_template('index.html')

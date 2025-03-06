@@ -31,6 +31,7 @@ def nova_venda():
     if request.method == 'POST':
         data = request.form['data']
         produtos = request.form.getlist('produtos')
+
         if len(produtos) == 1 and '' in produtos:
             flash('Insira ao menos 1 produto')
             return redirect(url_for('venda.nova_venda'))
@@ -56,14 +57,14 @@ def nova_venda():
 
             total += preco * int(quantidades[i])
             
-            update_sql = text("UPDATE tb_produtos SET pro_estoque = :quantidade WHERE pro_nome = :nome")
-            estoque_atual = Produto.estoque(nome = produtos[i])
-            novo_estoque = estoque_atual - int(quantidades[i]) 
-            if novo_estoque < 0:
-                flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
-                return redirect(url_for('venda.nova_venda'))
+            #update_sql = text("UPDATE tb_produtos SET pro_estoque = :quantidade WHERE pro_nome = :nome")
+            #estoque_atual = Produto.estoque(nome = produtos[i])
+            #novo_estoque = estoque_atual - int(quantidades[i]) 
+            # if novo_estoque < 0:
+            #     flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
+            #     return redirect(url_for('venda.nova_venda'))
 
-            session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
+            #session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
         total = round(total, 2)
         try:
             venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
@@ -81,9 +82,25 @@ def nova_venda():
             preco_result = session.execute(sql, {"nome": produtos[i]})
             preco = preco_result.scalar()
             quantidade = int(quantidades[i])
-            venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantproduto=quantidade, vpr_precoproduto=preco)
-            session.add(venda_produto)
-            session.commit()
+            try:
+                venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantproduto=quantidade, vpr_precoproduto=preco)
+                session.add(venda_produto)
+                session.commit()
+            except IntegrityError as e:
+                session.rollback()  # Necessário fazer rollback em caso de erro na transação
+                flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
+                return redirect(url_for('venda.nova_venda'))
+        for i in range (0, len(produtos)):
+            update_sql = text("UPDATE tb_produtos SET pro_estoque = :quantidade WHERE pro_nome = :nome")
+            estoque_atual = Produto.estoque(nome = produtos[i])
+            novo_estoque = estoque_atual - int(quantidades[i]) 
+            if novo_estoque >= 0:
+                session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
+                session.commit()
+            else:
+                flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
+                return redirect(url_for('venda.nova_venda'))
+
 
         return redirect(url_for('venda.view'))
     else: 
