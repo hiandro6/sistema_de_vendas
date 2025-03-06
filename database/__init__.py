@@ -26,26 +26,26 @@ sql_trigger_verificar_estoque = """
     END;
     """
 
-log_trigger_insert = """
+log_trigger_insert = f"""
         -- Trigger para INSERT
         CREATE TRIGGER log_vendas_insert
         AFTER INSERT ON tb_vendas
         FOR EACH ROW
         BEGIN
             INSERT INTO tb_logs_vendas (log_operacao, log_id_venda, log_id_cliente, log_usuario, log_data_hora)
-            VALUES ('INSERT', NEW.ven_id, NEW.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
+            VALUES ('INSERT', NEW.ven_id, NEW.ven_cli_id, NEW.ven_usuario, CURRENT_TIMESTAMP);
         END;
         """
 
 log_trigger_update = """
         -- Trigger para UPDATE
-         CREATE TRIGGER log_vendas_update
-         AFTER UPDATE ON tb_vendas
-         FOR EACH ROW
-         BEGIN
-             INSERT INTO tb_logs_vendas (log_operacao, log_id_venda, log_id_cliente, log_usuario, log_data_hora)
-             VALUES ('UPDATE', NEW.ven_id, NEW.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
-         END;
+        CREATE TRIGGER log_vendas_update
+        AFTER UPDATE ON tb_vendas
+        FOR EACH ROW
+        BEGIN
+            INSERT INTO tb_logs_vendas (log_operacao, log_id_venda, log_id_cliente, log_usuario, log_data_hora)
+            VALUES ('UPDATE', NEW.ven_id, NEW.ven_cli_id, NEW.ven_usuario, CURRENT_TIMESTAMP);
+        END;
     """
 
 log_trigger_delete = """
@@ -55,7 +55,7 @@ log_trigger_delete = """
         FOR EACH ROW
         BEGIN
             INSERT INTO tb_logs_vendas (log_operacao, log_id_venda, log_id_cliente, log_usuario, log_data_hora)
-            VALUES ('DELETE', OLD.ven_id, OLD.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
+            VALUES ('DELETE', OLD.ven_id, OLD.ven_cli_id, OLD.ven_usuario, CURRENT_TIMESTAMP);
         END;
         """
 
@@ -93,3 +93,4 @@ except:
 #             INSERT INTO tb_logs_vendas (log_operacao, log_id_venda, log_id_cliente, log_usuario, log_data_hora)
 #             VALUES ('DELETE', OLD.ven_id, OLD.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
 #         END;
+

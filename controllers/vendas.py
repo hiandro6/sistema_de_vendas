@@ -5,7 +5,7 @@ from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
 from sqlalchemy import text
 from database import session
-from flask_login import login_required
+from flask_login import login_required, current_user
 from decorators.role import role_required
 
 venda_bp = Blueprint(name='venda', import_name=__name__, template_folder='templates', url_prefix='/vendas')
@@ -67,7 +67,7 @@ def nova_venda():
             #session.execute(update_sql, {"quantidade": novo_estoque, "nome": produtos[i]})
         total = round(total, 2)
         try:
-            venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total) #criando a venda
+            venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total, ven_usuario = current_user.cli_nome) #criando a venda
             session.add(venda)
             session.commit()
             flash("Venda Cadastrada com Sucesso", "success")
