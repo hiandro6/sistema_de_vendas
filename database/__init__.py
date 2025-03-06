@@ -38,3 +38,35 @@ try:
     check_and_create_trigger()
 except:
     pass
+
+try:
+    trigger_sql = """
+    -- Trigger para INSERT
+    CREATE TRIGGER log_vendas_insert
+    AFTER INSERT ON tb_vendas
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO tb_logs_vendas (operacao, id_venda, id_cliente, usuario, data_hora)
+        VALUES ('INSERT', NEW.ven_id, NEW.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
+    END;
+
+    -- Trigger para UPDATE
+    CREATE TRIGGER log_vendas_update
+    AFTER UPDATE ON tb_vendas
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO tb_logs_vendas (operacao, id_venda, id_cliente, usuario, data_hora)
+        VALUES ('UPDATE', NEW.ven_id, NEW.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
+    END;
+
+    -- Trigger para DELETE
+    CREATE TRIGGER log_vendas_delete
+    AFTER DELETE ON tb_vendas
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO tb_logs_vendas (operacao, id_venda, id_cliente, usuario, data_hora)
+        VALUES ('DELETE', OLD.ven_id, OLD.ven_cli_id, 'usuario_exemplo', CURRENT_TIMESTAMP);
+    END;
+    """
+except:
+    print('quebrou o trigger D:')

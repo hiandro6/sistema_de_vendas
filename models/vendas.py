@@ -15,6 +15,8 @@ class Venda(Base):
     clientes: Mapped[List["Cliente"]] = relationship("Cliente", back_populates='vendas')
     #produtos: Mapped[List['VendaProdutos']] = relationship(back_populates='vendas')
 
+    logs_vendas = relationship("LogVenda", back_populates="venda")
+    
     @classmethod
     def find(cls, **kwargs):
         if 'id' in kwargs:

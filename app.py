@@ -13,15 +13,6 @@ from werkzeug.security import generate_password_hash
 # from models.vendas import Vendas
 # from models.vendasprodutos import VendasProdutos
 
-def add_admin():
-    admin_existente = session.query(Cliente).filter(Cliente.cli_email == "admin@admin").first()
-    print(admin_existente)
-    if not admin_existente:
-        user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = generate_password_hash("123"), cli_tipo="admin")
-        session.add(user)
-        session.commit()
-    else:
-        pass
 
 app = Flask(__name__)
 
@@ -39,6 +30,16 @@ app.register_blueprint(cliente_bp)
 app.register_blueprint(produto_bp)
 app.register_blueprint(venda_bp)
 app.register_blueprint(relatorio_bp)
+
+def add_admin():
+    admin_existente = session.query(Cliente).filter(Cliente.cli_email == "admin@admin").first()
+    print(admin_existente)
+    if not admin_existente:
+        user = Cliente(cli_nome = "admin", cli_email = "admin@admin", cli_telefone = "00000000", cli_endereco = "Sistema", cli_senha = generate_password_hash("123"), cli_tipo="admin")
+        session.add(user)
+        session.commit()
+    else:
+        pass
 
 @app.route('/')
 def index():
