@@ -10,70 +10,92 @@ Produtos
 <link rel="stylesheet" href="{{ url_for('static', filename='style/itens.css') }}">
 <script src="{{ url_for('static', filename='script/menu.js') }}"></script>
 <script src="{{ url_for('static', filename='script/dell.js') }}"></script>
+<script src="https://kit.fontawesome.com/4dbfde8f41.js" crossorigin="anonymous"></script>
 
 {% endblock %}
 
 {% block content %}
 <nav class="nav-reg">
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+
     <div class="links">
+        <div class="links-nav">
 
-        <!-- Dropdown Relatórios -->
-        {% if current_user.cli_tipo == 'admin' %}
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
-            <div class="dropdown-content" id="relatorios-menu">
-                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
-                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
-                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
-                <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
-            </div>
-        </div>
-
-        <!-- Dropdown Vendas -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
-            <div class="dropdown-content" id="vendas-menu">
-                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
-                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
-            </div>
-        </div>
-        {% endif %}
-        <!-- Dropdown Produtos -->
-        <div class="dropdown">
+            <!-- Dropdown Relatórios -->
             {% if current_user.cli_tipo == 'admin' %}
-            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
-            <div class="dropdown-content" id="produtos-menu">
-                <a href="{{url_for('produtos.view')}}">Catalogo de Produtos</a>
-                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">
+                    <i class="fa-solid fa-list-ul"></i>
+                    Relatórios
+                </button>
+                <div class="dropdown-content" id="relatorios-menu">
+                    <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                    <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                    <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                    <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+                </div>
             </div>
-            <!-- <button class="dropdown-button" onclick="{{url_for('produtos.view')}}">Produtos</button> -->
-        </div>
+    
+            <!-- Dropdown Vendas -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">
+                    <i class="fa-solid fa-cash-register"></i>
+                    Vendas
+                </button>
+                <div class="dropdown-content" id="vendas-menu">
+                    <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                    <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+                </div>
+            </div>
             {% endif %}
-        {% if current_user.cli_tipo == 'admin' %}
-        <!-- Dropdown Clientes -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
-            <div class="dropdown-content" id="clientes-menu">
-                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
-                <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+            <!-- Dropdown Produtos -->
+            <div class="dropdown">
+                {% if current_user.cli_tipo == 'admin' %}
+                <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    Produtos</button>
+                <div class="dropdown-content" id="produtos-menu">
+                    <a href="{{url_for('produtos.view')}}">Catalogo de Produtos</a>
+                    <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+                </div>
+                <!-- <button class="dropdown-button" onclick="{{url_for('produtos.view')}}">Produtos</button> -->
             </div>
+                {% endif %}
+            {% if current_user.cli_tipo == 'admin' %}
+            <!-- Dropdown Clientes -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">
+                    <i class="fa-solid fa-users"></i>
+                    Clientes
+                </button>
+                <div class="dropdown-content" id="clientes-menu">
+                    <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+                    <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
         <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
     </div>
 </nav>
-<div class="filtro p-v">
-    <span>Ordernar por</span>
-    <form action="{{url_for('produtos.view')}}" method="post">
-        <select name="ordem" id="filtro-cli">
-            <option value="crescente">crescente</option>
-            <option value="decrescente">decrescente</option>
-        </select>
 
-        <button type="submit">Ordernar</button>
-    </form>
-</div>
+<aside>
+    <div class="titlepage">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <h1>Produtos</h1>
+    </div>
+    <div class="filtro p-v">
+        <span>Ordernar por</span>
+        <form action="{{url_for('produtos.view')}}" method="post">
+            <select name="ordem" id="filtro-cli">
+                <option value="crescente">crescente</option>
+                <option value="decrescente">decrescente</option>
+            </select>
+    
+            <button type="submit">Ordernar</button>
+        </form>
+    </div>
+</aside>
 <div id="produto">
     <ol class="itens">
         {% if produtos %}
