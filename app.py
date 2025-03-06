@@ -1,12 +1,12 @@
 from flask import Flask, render_template, url_for, redirect
 from flask_login import current_user
-from database.config import engine
+from database import engine
 from database import Base
 from controllers.clientes import login_manager, cliente_bp
 from controllers.produtos import produto_bp
 from controllers.vendas import venda_bp
 from controllers.relatorios import relatorio_bp
-from database.config import session
+from database import session
 from models.clientes import Cliente
 # from models.produtos import Produtos
 # from models.vendas import Vendas

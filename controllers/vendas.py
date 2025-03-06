@@ -4,7 +4,7 @@ from models.clientes import Cliente
 from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
 from sqlalchemy import text
-from database.config import session
+from database import session
 from flask_login import login_required
 from decorators.role import role_required
 
@@ -31,7 +31,6 @@ def nova_venda():
     if request.method == 'POST':
         data = request.form['data']
         produtos = request.form.getlist('produtos')
-        print('------------------------',produtos)
         if len(produtos) == 1 and '' in produtos:
             flash('Insira ao menos 1 produto')
             return redirect(url_for('venda.nova_venda'))

@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, request, render_template, flash
-from database.config import session
+from database import session
 from models.produtos import Produto
 from sqlalchemy import text
 from flask_login import login_required

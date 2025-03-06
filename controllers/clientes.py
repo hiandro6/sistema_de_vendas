@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 from models.clientes import Cliente
 
-from database.config import session
+from database import session
 
 from sqlalchemy import text
 

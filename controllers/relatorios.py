@@ -4,7 +4,7 @@ from models.clientes import Cliente
 from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
 from sqlalchemy import text, func, select, desc
-from database.config import session
+from database import session
 from flask_login import login_required
 from decorators.role import role_required
 

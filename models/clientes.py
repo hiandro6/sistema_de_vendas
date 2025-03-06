@@ -5,7 +5,7 @@ from sqlalchemy.exc import NoResultFound
 from typing import List
 from database import Base
 from flask_login import UserMixin
-from database.config import session
+from database import session
 from .vendas import Venda
 
 class Cliente(Base, UserMixin):

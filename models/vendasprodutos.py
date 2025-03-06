@@ -2,7 +2,7 @@ from sqlalchemy.orm import DeclarativeBase, mapped_column, relationship, Mapped
 from sqlalchemy import String, ForeignKey, Date, text
 from typing import List
 from database import Base
-from database.config import session
+from database import session
 
 
 class VendaProdutos(Base):

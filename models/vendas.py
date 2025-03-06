@@ -3,7 +3,7 @@ from sqlalchemy import String, ForeignKey, text
 from typing import List
 from database import Base
 from .vendasprodutos import VendaProdutos
-from database.config import session
+from database import session
 
 
 class Venda(Base):
