@@ -13,6 +13,8 @@ produto_bp = Blueprint(name='produtos', import_name=__name__, template_folder='t
 @produto_bp.route('/', methods=['GET','POST'])
 @login_required
 def view():
+    result = session.execute(text("SELECT name FROM sqlite_master WHERE type='trigger'")).fetchall()
+    print(result)
     if request.method == 'POST':
         ordem = request.form['ordem']
         produtos = Produto.all(ordem=ordem)

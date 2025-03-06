@@ -2,5 +2,6 @@ all = [
     'clientes',
     'produtos',
     'vendas',
-    'produtos'
+    'produtos',
+    'logvenda'
 ]

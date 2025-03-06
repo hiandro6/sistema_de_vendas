@@ -19,7 +19,7 @@ class Cliente(Base, UserMixin):
     cli_senha:Mapped[str] = mapped_column(nullable=False)
     cli_tipo:Mapped[str] = mapped_column(nullable=False)
     vendas: Mapped[list["Venda"]] = relationship("Venda", back_populates="clientes", cascade="all, delete-orphan")
-    logs_vendas = relationship("LogVenda", back_populates="cliente")
+    #logs_vendas = relationship("LogVenda", back_populates="cliente")
 
 
     def get_id(self): #sobresrever get id do UserMixin
