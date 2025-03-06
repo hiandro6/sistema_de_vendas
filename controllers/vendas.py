@@ -38,6 +38,77 @@ def nova_venda():
         elif '' in produtos:
             flash('Preencha os campos de nome dos produtos')
             return redirect(url_for('venda.nova_venda'))
+
+        quantidades = request.form.getlist('quantidades')
+
+        info_cliente = request.form['id_cliente']
+        if info_cliente.isnumeric():  # se o dado for um número fazemos a busca por id, caso contrário buscamos pelo email
+            cliente = Cliente.find(id=info_cliente)
+        else:
+            cliente = Cliente.find(email=info_cliente)
+
+        total = 0
+        for i in range(len(produtos)):  # calculando o valor total da venda e verificando o estoque
+            preco_sql = text("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome")
+            preco = session.execute(preco_sql, {"nome": produtos[i]}).scalar()
+            if preco is None:
+                flash(f"Erro: O produto '{produtos[i]}' não foi encontrado no banco de dados.", "error")
+                return redirect(url_for('venda.nova_venda'))
+            preco = float(preco)
+
+            total += preco * int(quantidades[i])
+
+            # Verifica o estoque antes de cadastrar a venda
+            estoque_atual = Produto.estoque(nome=produtos[i])
+            if estoque_atual < int(quantidades[i]):
+                flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
+                return redirect(url_for('venda.nova_venda'))
+
+        total = round(total, 2)
+
+        try:
+            # Cadastra a venda
+            venda = Venda(ven_data=data, ven_cli_id=cliente.cli_id, ven_total=total, ven_usuario=current_user.cli_nome)
+            session.add(venda)
+            session.commit()
+            flash("Venda Cadastrada com Sucesso", "success")
+        except:
+            flash("Ocorreu um erro ao cadastrar a venda", "error")
+            return redirect(url_for('venda.nova_venda'))
+
+        # Adiciona os produtos vendidos e atualiza o estoque
+        for i in range(len(produtos)):
+            preco_sql = text("SELECT pro_preco FROM tb_produtos WHERE pro_nome = :nome")
+            preco = session.execute(preco_sql, {"nome": produtos[i]}).scalar()
+            quantidade = int(quantidades[i])
+
+            try:
+                venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantproduto=quantidade, vpr_precoproduto=preco)
+                session.add(venda_produto)
+                session.commit()
+            except:
+                session.rollback()
+                flash(f"Erro ao cadastrar o produto '{produtos[i]}' na venda.", "error")
+                return redirect(url_for('venda.nova_venda'))
+
+            # Atualiza o estoque
+            update_sql = text("UPDATE tb_produtos SET pro_estoque = pro_estoque - :quantidade WHERE pro_nome = :nome")
+            session.execute(update_sql, {"quantidade": quantidade, "nome": produtos[i]})
+            session.commit()
+
+        return redirect(url_for('venda.view'))
+    else:
+        return render_template('vendas/nova_venda.html', produtos=Produto.all())
+    """if request.method == 'POST':
+        data = request.form['data']
+        produtos = request.form.getlist('produtos')
+
+        if len(produtos) == 1 and '' in produtos:
+            flash('Insira ao menos 1 produto')
+            return redirect(url_for('venda.nova_venda'))
+        elif '' in produtos:
+            flash('Preencha os campos de nome dos produtos')
+            return redirect(url_for('venda.nova_venda'))
         quantidades = request.form.getlist('quantidades')
 
         info_cliente = request.form['id_cliente']
@@ -82,11 +153,12 @@ def nova_venda():
             preco_result = session.execute(sql, {"nome": produtos[i]})
             preco = preco_result.scalar()
             quantidade = int(quantidades[i])
-            try:
+            try:       #está cadastrando mesmo se o estoque for negativo
                 venda_produto = VendaProdutos(vpr_ven_id=venda.ven_id, vpr_pro_id=produtos[i], vpr_quantproduto=quantidade, vpr_precoproduto=preco)
                 session.add(venda_produto)
                 session.commit()
-            except IntegrityError as e:
+                
+            except:
                 session.rollback()  # Necessário fazer rollback em caso de erro na transação
                 flash(f"Erro: Estoque insuficiente para o produto '{produtos[i]}'.", "error")
                 return redirect(url_for('venda.nova_venda'))
@@ -105,7 +177,7 @@ def nova_venda():
         return redirect(url_for('venda.view'))
     else: 
         return render_template('vendas/nova_venda.html', produtos = Produto.all())
-    
+    """
 
 @venda_bp.route('/edit/<int:venda_id>', methods=['POST', 'GET'])
 @login_required
