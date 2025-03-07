@@ -21,7 +21,7 @@ nav, .nav-reg{
     justify-content: center;
     background-color: #ECF0F1;
     width: 20vw;
-    height: 100vh;
+    height: 100%;
     gap: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
@@ -150,17 +150,11 @@ nav, .nav-reg{
     }
 }
 
-aside{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 40rem;
-    padding: 3rem;
-}
 
 .titlepage{
     display: flex;
+    width: 100%;
+    justify-content: end;
     align-items: center;
     gap: 1rem;
 
@@ -186,7 +180,7 @@ aside{
     padding: 1rem;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    width: auto;
+    width: 30%;
     height: 5rem;
     gap: 0.5rem;
 
