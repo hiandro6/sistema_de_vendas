@@ -12,58 +12,76 @@
 {% endblock %}
 
 {% block content %}
-<nav>
+<nav class="nav-reg">
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+
     <div class="links">
-        
-        <!-- Dropdown Relatórios -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
-            <div class="dropdown-content" id="relatorios-menu">
-                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
-                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
-                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
-                <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
-                <a href="{{url_for('relatorio.logs')}}">Histórico de logs</a>
-            </div>
-        </div>
+        <div class="links-nav">
 
-        <!-- Dropdown Vendas -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
-            <div class="dropdown-content" id="vendas-menu">
-                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
-                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+            <!-- Dropdown Relatórios -->
+            {% if current_user.cli_tipo == 'admin' %}
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">
+                    <i class="fa-solid fa-list-ul"></i>
+                    Relatórios
+                </button>
+                <div class="dropdown-content" id="relatorios-menu">
+                    <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                    <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                    <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                    <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+                    <a href="{{url_for('relatorio.logs')}}">Histórico de logs</a>
+                </div>
             </div>
-        </div>
-
-        <!-- Dropdown Produtos -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
-            <div class="dropdown-content" id="produtos-menu">
-                <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
-                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+    
+            <!-- Dropdown Vendas -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">
+                    <i class="fa-solid fa-cash-register"></i>
+                    Vendas
+                </button>
+                <div class="dropdown-content" id="vendas-menu">
+                    <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                    <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+                </div>
             </div>
-        </div>
-
-        <!-- Dropdown Clientes -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
-            <div class="dropdown-content" id="clientes-menu">
-                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
-                <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+            {% endif %}
+            <!-- Dropdown Produtos -->
+            <div class="dropdown">
+                {% if current_user.cli_tipo == 'admin' %}
+                <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    Produtos</button>
+                <div class="dropdown-content" id="produtos-menu">
+                    <a href="{{url_for('produtos.view')}}">Catalogo de Produtos</a>
+                    <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+                </div>
+                <!-- <button class="dropdown-button" onclick="{{url_for('produtos.view')}}">Produtos</button> -->
             </div>
+                {% endif %}
+            {% if current_user.cli_tipo == 'admin' %}
+            <!-- Dropdown Clientes -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">
+                    <i class="fa-solid fa-users"></i>
+                    Clientes
+                </button>
+                <div class="dropdown-content" id="clientes-menu">
+                    <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+                    <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
-
         <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
     </div>
 </nav>
 <main>
     <h1>Editar Venda</h1>
-    <form action="{{ url_for('venda.edit', venda_id=venda.ven_id) }}" method="post" class="ed-venda">
+    <form action="{{ url_for('venda.edit', venda_id=venda.ven_id) }}" method="post" class="ed-venda row g-3 ">
         <!-- Data da Venda -->
 
-        <div class="dat-venda">
+        <div class="col-md-5">
             <label for="data">Data da Venda:</label>
             <input type="date" id="data" name="data" value="{{ venda.ven_data }}" required><br><br>
         </div>
@@ -72,9 +90,9 @@
         <div id="produtos-container">
             {% for item in venda_produtos %}
             <div class="produto-item">
-                <div class="produto">
-                    <label for="produtos">Produto:</label>
-                    <select name="produtos" class="produtos" required>
+                <div class="col-md-8">
+                    <label for="form-label">Produto:</label>
+                    <select name="produtos" class="produtos form-select" required>
                         {% for produto in produtos %}
                             <option value="{{ produto.pro_nome }}" {% if produto.pro_nome == item.pro_nome %}selected{% endif %}>{{ produto.pro_nome }}</option>
                         {% endfor %}
@@ -82,18 +100,18 @@
                 </div>
 
                 <div class="qnts">
-                    <label for="quantidades">Quantidade:</label>
-                    <input type="number" name="quantidades" class="quantidades" min="1" value="{{ item.vpr_quantproduto }}" required>
+                    <label for="quantidades" class="form-label">Quantidade:</label>
+                    <input type="number" name="quantidades" class="quantidades form-control" min="1" value="{{ item.vpr_quantproduto }}" required>
                 </div>
 
-                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+                <button type="button" class="btn btn-primary" onclick="removerProduto(this)">Remover</button>
             </div>
             {% endfor %}
         </div>
-        <button type="button" id="adicionar-produto">Adicionar Produto</button><br><br>
+        <button type="button" id="adicionar-produto" class="btn btn-link">Adicionar Produto</button><br><br>
 
         <!-- Botão de Envio -->
-        <button type="submit">Atualizar</button>
+        <button type="submit" class="btn btn-success">Atualizar</button>
     </form>
 </main>
     <script>
@@ -103,15 +121,15 @@
             const novoProduto = document.createElement('div');
             novoProduto.classList.add('produto-item');
             novoProduto.innerHTML = `
-                <label for="produtos">Produto:</label>
-                <select name="produtos" class="produtos" required>
+                <label for="produtos" class="form-label">Produto:</label>
+                <select name="produtos" class="produtos form-select" required>
                     {% for produto in produtos %}
                         <option value="{{ produto.pro_nome }}">{{ produto.pro_nome }}</option>
                     {% endfor %}
                 </select>
-                <label for="quantidades">Quantidade:</label>
-                <input type="number" name="quantidades" class="quantidades" min="1" required>
-                <button type="button" class="remover-produto" onclick="removerProduto(this)">Remover</button>
+                <label for="quantidades" class="form-label">Quantidade:</label>
+                <input type="number" name="quantidades" class="quantidades form-control" min="1" required>
+                <button type="button" class="btn btn-primary" onclick="removerProduto(this)">Remover</button>
             `;
             container.appendChild(novoProduto);
         });
