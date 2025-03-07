@@ -33,7 +33,7 @@ body, html {
 }
 
 .links.login a {
-    background-color: red;
+    background-color: #28a745;
     display: inline-block;
     text-decoration: none;
     text-align: center;
@@ -88,7 +88,7 @@ main {
 }
 
 .formulario button {
-    background-color: red;
+    background-color: #28a745;
     border-style: none;
     padding: 10px;
     width: 100%;
