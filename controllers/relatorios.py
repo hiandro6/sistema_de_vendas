@@ -4,7 +4,7 @@ from models.clientes import Cliente
 from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
 from models.logvenda import LogVenda
-from sqlalchemy import text, func, select, desc
+from sqlalchemy import text, func, select, desc, or_
 from database import session
 from flask_login import login_required
 from decorators.role import role_required
@@ -21,25 +21,42 @@ def filtros():
 @login_required
 @role_required("admin")
 def totalcompras():
-    clientes = []
+    # clientes = []
     if request.method == 'POST':
         data_inicio = request.form.get("data_inicio")
         data_fim = request.form.get("data_fim")
+        info_cliente = request.form['id_cliente']
+        if info_cliente.isnumeric():  # se o dado for um número fazemos a busca por id, caso contrário buscamos pelo email
+            cliente = Cliente.find(id=info_cliente)
+        else:
+            cliente = Cliente.find(email=info_cliente)
 
         try:
-            # Consulta para contar o total de compras por cliente no período
-            clientes_query = (
-                session.query(
-                    Cliente.cli_nome,
-                    func.count(Venda.ven_id).label('quantidade_compras'),
-                    func.sum(Venda.ven_total).label('total_gasto')
+            if info_cliente:
+                # Consulta para contar o total de compras por cliente no período
+                cliente_query = (
+                    session.query(
+                        Cliente.cli_nome,
+                        func.count(Venda.ven_id).label('quantidade_compras'),
+                        func.sum(Venda.ven_total).label('total_gasto')
+                    )
+                    .join(Venda, Cliente.cli_id == Venda.ven_cli_id)
+                    .filter(Venda.ven_data.between(data_inicio, data_fim), or_(Cliente.cli_id == info_cliente, Cliente.cli_email == info_cliente))  # Filtra pelo intervalo de datas
+                    .group_by(Cliente.cli_id)
+                    .order_by(desc('quantidade_compras'))  # Ordena pelo número de compras
                 )
-                .join(Venda, Cliente.cli_id == Venda.ven_cli_id)
-                .filter(Venda.ven_data.between(data_inicio, data_fim))  # Filtra pelo intervalo de datas
-                .group_by(Cliente.cli_id)
-                .order_by(desc('quantidade_compras'))  # Ordena pelo número de compras
-            )
-
+            else:
+                # Consulta para contar o total de compras por cliente no período
+                cliente_query = (
+                    session.query(
+                        Cliente.cli_nome,
+                        func.count(Venda.ven_id).label('quantidade_compras'),
+                        func.sum(Venda.ven_total).label('total_gasto')
+                    )
+                    .join(Venda, Cliente.cli_id == Venda.ven_cli_id)
+                    .filter(Venda.ven_data.between(data_inicio, data_fim))  # Filtra pelo intervalo de datas
+                    .group_by(Cliente.cli_id)
+                    .order_by(desc('quantidade_compras')))  # Ordena pelo número de compras
             # Query MySQL equivalente:
             """
             SELECT cli_nome, 
@@ -47,19 +64,21 @@ def totalcompras():
                    SUM(ven_total) AS total_gasto
             FROM tb_clientes
             JOIN tb_vendas ON cli_id = ven_cli_id
-            WHERE ven_data BETWEEN ? AND ?
+            WHERE (ven_data BETWEEN ? AND ?) AND (cli_id = ? OR cli_email = ?)
             GROUP BY cli_id
             ORDER BY quantidade_compras DESC;
             """
 
 
-            clientes = clientes_query.all()
-
+            clientes = cliente_query.all()
+            print('--------')
+            print(clientes)
+            return render_template('relatorios/totalcompras.html',clientes=clientes )
         except Exception as e:
             print(f"Erro ao gerar relatório de total de compras por cliente: {str(e)}")
             flash(f"Erro ao gerar relatório de total de compras por cliente: {str(e)}", "error")
 
-    return render_template("relatorios/totalcompras.html", clientes=clientes)
+    return render_template("relatorios/totalcompras.html")
 
 
 @relatorio_bp.route('/compras1k', methods=['GET', 'POST'])
