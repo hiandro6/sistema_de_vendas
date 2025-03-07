@@ -84,7 +84,7 @@ Clientes
         {% for log in logs %}
             <div class="log">
                 <ul>
-                    <li><span style="color: red;">Data:</span> {{ log.log_data_hora.split(' ')[0] }}<li>
+                    <li><span style="color: red;">Data:</span> {{ log.log_data_hora.split(' ')[0].split('-')[2]}}/{{log.log_data_hora.split(' ')[0].split('-')[1]}}/{{log.log_data_hora.split(' ')[0].split('-')[0]}} <li>
                     <li><span style="color: red;">Hora:</span> {{ log.log_data_hora.split(' ')[1] }}<li>
                 </ul>
                 <ul>
