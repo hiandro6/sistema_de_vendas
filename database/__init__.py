@@ -28,7 +28,59 @@ END;
 """
 
 def criar_funcao_calcular_total_vendas():
-    print("eeebaaaaaa")
+    print("função criada com sucesso")
+
+sql_procedure = """
+    CREATE PROCEDURE validar_venda(
+        IN id_cliente INT,
+        IN id_produto INT,
+        IN quantidade INT
+    )
+    BEGIN
+        DECLARE estoque_atual INT;
+        DECLARE status_cliente VARCHAR(50);
+        DECLARE data_atual DATE;
+
+        -- Verifica o estoque do produto
+        SELECT pro_estoque INTO estoque_atual
+        FROM tb_produtos
+        WHERE pro_id = id_produto;
+
+        IF estoque_atual < quantidade THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente para o produto';
+        END IF;
+
+        -- Verifica o status do cliente
+        SELECT cli_status INTO status_cliente
+        FROM tb_clientes
+        WHERE cli_id = id_cliente;
+
+        IF status_cliente != 'ativo' THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente não está apto para realizar a compra';
+        END IF;
+
+        -- Verifica a data da venda (exemplo: não pode ser uma data futura)
+        SET data_atual = CURDATE();
+
+        IF data_atual > CURDATE() THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Data da venda inválida';
+        END IF;
+
+        -- Se todas as validações passarem, insere a venda
+        INSERT INTO tb_vendas (ven_cli_id, ven_pro_id, ven_quantidade, ven_data)
+        VALUES (id_cliente, id_produto, quantidade, CURDATE());
+
+        -- Atualiza o estoque do produto
+        UPDATE tb_produtos
+        SET pro_estoque = pro_estoque - quantidade
+        WHERE pro_id = id_produto;
+
+        -- Retorna uma mensagem de sucesso
+        SELECT 'Venda realizada com sucesso!' AS mensagem;
+    END;"""    
+
+def criar_procedure():
+    print("procedure criado com sucesso")
 
 sql_trigger_verificar_estoque = """
     CREATE TRIGGER verificar_estoque
@@ -94,5 +146,8 @@ try:
     print("deu bom o trigger")
     criar_funcao_calcular_total_vendas()
     print("deu bom a função")
+    criar_procedure()
+    print("deu bom o procedure")
+    
 except:
     print('quebrou o trigger ou a funcao D:')
