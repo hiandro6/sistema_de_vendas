@@ -13,55 +13,73 @@
 
 {% block content %}
 
-<nav>
+<nav class="nav-reg">
     <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+
     <div class="links">
-        
-        <!-- Dropdown Relatórios -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
-            <div class="dropdown-content" id="relatorios-menu">
-                <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
-                <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
-                <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
-                <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
-                <a href="{{url_for('relatorio.logs')}}">Histórico de logs</a>
-            </div>
-        </div>
+        <div class="links-nav">
 
-        <!-- Dropdown Vendas -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">Vendas</button>
-            <div class="dropdown-content" id="vendas-menu">
-                <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
-                <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+            <!-- Dropdown Relatórios -->
+            {% if current_user.cli_tipo == 'admin' %}
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">
+                    <i class="fa-solid fa-list-ul"></i>
+                    Relatórios
+                </button>
+                <div class="dropdown-content" id="relatorios-menu">
+                    <a href="{{url_for('relatorio.top10produtos')}}">Top 10</a>
+                    <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
+                    <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
+                    <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+                    <a href="{{url_for('relatorio.logs')}}">Histórico de logs</a>
+                </div>
             </div>
-        </div>
-
-        <!-- Dropdown Produtos -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">Produtos</button>
-            <div class="dropdown-content" id="produtos-menu">
-                <a href="{{url_for('produtos.view')}}">Visualizar Produtos</a>
-                <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+    
+            <!-- Dropdown Vendas -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('vendas-menu')">
+                    <i class="fa-solid fa-cash-register"></i>
+                    Vendas
+                </button>
+                <div class="dropdown-content" id="vendas-menu">
+                    <a href="{{url_for('venda.view')}}">Visualizar Vendas</a>
+                    <a href="{{url_for('venda.nova_venda')}}">Nova Venda</a>
+                </div>
             </div>
-        </div>
-
-        <!-- Dropdown Clientes -->
-        <div class="dropdown">
-            <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
-            <div class="dropdown-content" id="clientes-menu">
-                <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
-                <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+            {% endif %}
+            <!-- Dropdown Produtos -->
+            <div class="dropdown">
+                {% if current_user.cli_tipo == 'admin' %}
+                <button class="dropdown-button" onclick="toggleDropdown('produtos-menu')">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    Produtos</button>
+                <div class="dropdown-content" id="produtos-menu">
+                    <a href="{{url_for('produtos.view')}}">Catalogo de Produtos</a>
+                    <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
+                </div>
+                <!-- <button class="dropdown-button" onclick="{{url_for('produtos.view')}}">Produtos</button> -->
             </div>
+                {% endif %}
+            {% if current_user.cli_tipo == 'admin' %}
+            <!-- Dropdown Clientes -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">
+                    <i class="fa-solid fa-users"></i>
+                    Clientes
+                </button>
+                <div class="dropdown-content" id="clientes-menu">
+                    <a href="{{url_for('cliente.view')}}">Lista de Clientes</a>
+                    <a href="{{url_for('cliente.register')}}">Cadastrar Clientes</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
-
         <a class='sair' href="{{url_for('cliente.logout')}}">Sair</a>
     </div>
 </nav>
 <div class="relatorio">
     <h2>Produtos não vendidos nos últimos 
-        <form action="{{ url_for('relatorio.naovendidos') }}" method="post" style="display:inline;" class="filtro dias">
+        <form action="{{ url_for('relatorio.naovendidos') }}" method="post" style="display:inline;" class="filtrodias">
             <select name="dias" id="dias" onchange="this.form.submit()">
                 <option value="7" {% if request.form.get('dias') == '7' %}selected{% endif %}>7</option>
                 <option value="30" {% if request.form.get('dias') == '30' %}selected{% endif %}>30</option>
