@@ -61,6 +61,10 @@
     <h2>Total de Compras por Cliente</h2>
 
     <form action="{{ url_for('relatorio.totalcompras') }}" method="post" class="filtro">
+        <div class="info-cliente">
+            <label for="id_cliente">Informações do Cliente (ID ou Email):</label>
+            <input type="text" id="id_cliente" name="id_cliente" placeholder="ID ou Email do Cliente"><br><br>
+        </div>      
         <label for="data_inicio">Data Início:</label>
         <input type="date" id="data_inicio" name="data_inicio" required>
 
