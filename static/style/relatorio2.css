@@ -1,32 +1,54 @@
 .relatorio {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
     max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .relatorio h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
     color: #333;
-    display: flex;
-    align-items: center;
-
+    margin-bottom: 15px;
 }
 
-.filtrodias select {
-    font-size: 3rem;
-    color: #28a745;
+.filtrodata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.filtrodata label {
     font-weight: bold;
+    color: #555;
+}
+
+.filtrodata input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.filtrodata button {
+    background: #007bff;
+    color: white;
+    padding: 10px;
     border: none;
     border-radius: 4px;
-    background: transparent;
     cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
 }
 
-
+.filtrodata button:hover {
+    background: #0056b3;
+}
 
 .respostas {
     list-style: none;
@@ -83,47 +105,3 @@
     color: #666;
     margin: 0;
 }
-
-.filtro {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.filtro label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.filtro input[type="date"] {
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: #f8f8f8;
-    cursor: pointer;
-}
-
-.filtro button {
-    padding: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #fff;
-    background: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.filtro button:hover {
-    background: #0056b3;
-}
-
