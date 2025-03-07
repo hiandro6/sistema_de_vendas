@@ -60,37 +60,20 @@ Clientes
     </div>
 </nav>
 <main>
-    <h1>Clientes Cadastrados</h1>
-    <div class="filtro">
-        <span>Ordernar por</span>
-        <form action="{{url_for('cliente.view')}}" method="post">
-            <select name="ordem" id="filtro-cli">
-                <option value="crescente">crescente</option>
-                <option value="decrescente">decrescente</option>
-            </select>
-
-            <button type="submit">Ordernar</button>
-        </form>
-    </div>
+    <h1>Histórico de logs</h1>
+    
     <div class="clientes">
-        {% for cliente in clientes %}
-            {% if cliente.cli_email != "adm@adm" %}
-                <div class="cliente">
-                    <ul>
-                        <li><span style="color: red;">Nome:</span> {{ cliente.cli_nome }}</li>
-                        <li><span style="color: red;">Email:</span> {{ cliente.cli_email }}</li>
-                    </ul>
-                    <ul>
-                        <li><span style="color: red;">Contato:</span> {{ cliente.cli_telefone }}</li>
-                        <li><span style="color: red;">Endereço:</span> {{ cliente.cli_endereco }}</li>
-                        <li><span style="color: red;">ID:</span> {{ cliente.cli_id }}</li>
-                    </ul>
-                    <div class="acoes">
-                        <a href="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}">Editar</a>
-                        <a href="#" onclick="return confirmarDeletar('{{url_for('cliente.remove', cli_id=cliente.cli_id)}}')">Deletar</a>
-                    </div>
-                </div>
-            {% endif %}
+        {% for log in logs %}
+            <div class="cliente">
+                <ul>
+                    <li><span style="color: red;">Data:</span> {{ log.log_data_hora.split(' ')[0] }}<li>
+                    <li><span style="color: red;">Hora:</span> {{ log.log_data_hora.split(' ')[1] }}<li>
+                </ul>
+                <ul>
+                    <li><span style="color: red;">Operação:</span> {{ log.log_operacao }}</li>
+                    <li><span style="color: red;">Usuário:</span> {{ log.log_usuario }}</li>
+                </ul>
+            </div>
         {% endfor %}
     </div>
 </main>

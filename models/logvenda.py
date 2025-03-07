@@ -18,3 +18,9 @@ class LogVenda(Base):
     # # Relacionamento com a tabela tb_vendas e tb_clientes
     # venda = relationship("Venda", back_populates="logs_vendas")
     # cliente = relationship("Cliente", back_populates="logs_vendas")
+
+    @classmethod
+    def all(cls):
+        sql = text(f"SELECT * FROM tb_logs_vendas")
+        logs = session.execute(sql).fetchall()
+        return logs

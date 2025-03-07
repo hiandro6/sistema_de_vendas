@@ -3,6 +3,7 @@ from models.vendas import Venda
 from models.clientes import Cliente
 from models.produtos import Produto
 from models.vendasprodutos import VendaProdutos
+from models.logvenda import LogVenda
 from sqlalchemy import text, func, select, desc
 from database import session
 from flask_login import login_required
@@ -211,9 +212,5 @@ WHERE pro_id NOT IN (
 @login_required
 @role_required("admin")
 def logs():
-    if request.method == 'POST':
-        ordem = request.form['ordem']
-        clientes = Cliente.all(ordem=ordem)
-    elif request.method == 'GET':
-        clientes = Cliente.all()
-    return render_template('relatorios/logs.html', clientes = clientes)
+    logs = LogVenda.all()
+    return render_template('relatorios/logs.html', logs = logs)
