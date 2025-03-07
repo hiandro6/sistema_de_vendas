@@ -12,7 +12,7 @@ main{
     flex-direction: row; /* Alinha os logs horizontalmente */
     gap: 1rem; /* Adiciona espaço entre os logs */
     flex-wrap: wrap;
-    margin-left: 30px;
+    margin-left: 50px;
     .log{
         background-color: white;
         justify-content:space-between;

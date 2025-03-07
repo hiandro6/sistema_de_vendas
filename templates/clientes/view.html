@@ -18,7 +18,7 @@ Clientes
     <div class="links">
         
         <!-- Dropdown Relatórios -->
-        {% if current_user.cli_id == 1 %}
+        {% if current_user.cli_tipo == 'admin' %}
             <div class="dropdown">
                 <button class="dropdown-button" onclick="toggleDropdown('relatorios-menu')">Relatórios</button>
                 <div class="dropdown-content" id="relatorios-menu">
@@ -47,7 +47,7 @@ Clientes
                 <a href="{{url_for('produtos.add')}}">Cadastrar Produto</a>
             </div>
         </div>
-        {% if current_user.cli_id == 1 %}
+        {% if current_user.cli_tipo == 'admin' %}
             <!-- Dropdown Clientes -->
             <div class="dropdown">
                 <button class="dropdown-button" onclick="toggleDropdown('clientes-menu')">Clientes</button>
@@ -75,7 +75,7 @@ Clientes
     </div>
     <div class="clientes">
         {% for cliente in clientes %}
-            {% if cliente.cli_email != "adm@adm" %}
+            {% if cliente.cli_email != "admin@admina" %}
                 <div class="cliente">
                     <ul>
                         <li><span style="color: red;">Nome:</span> {{ cliente.cli_nome }}</li>

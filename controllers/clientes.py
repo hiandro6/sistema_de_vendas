@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, url_for, request, render_template, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_required, login_user, logout_user
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 from models.clientes import Cliente
 
@@ -60,6 +60,8 @@ def register():
 
 @cliente_bp.route('/login', methods=['POST', 'GET'])
 def login(): 
+    if current_user.is_authenticated:
+        return redirect(url_for('produtos.view'))
     if request.method == 'POST':
         email = request.form['email']
         senha = request.form['senha']

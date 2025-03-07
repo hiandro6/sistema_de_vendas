@@ -34,6 +34,7 @@ login_manager.init_app(app)
 
 with app.app_context():
     Base.metadata.create_all(bind=engine)
+    add_admin()
 
 
 app.register_blueprint(cliente_bp)
@@ -43,7 +44,6 @@ app.register_blueprint(relatorio_bp)
 
 @app.route('/')
 def index():
-    add_admin()
     if current_user.is_authenticated:
         return redirect(url_for('produtos.view'))
     return render_template('index.html')
