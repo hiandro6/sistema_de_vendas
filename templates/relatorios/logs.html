@@ -14,7 +14,9 @@ Clientes
 
 {% block content %}
 <nav class="nav-reg">
-    <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    <a href="/produtos">
+        <img src="../../static/assets/cliqueconta.png" alt="Logo do CliqueCompra">
+    </a>
 
     <div class="links">
         <div class="links-nav">
@@ -84,12 +86,12 @@ Clientes
         {% for log in logs %}
             <div class="log">
                 <ul>
-                    <li><span style="color: red;">Data:</span> {{ log.log_data_hora.split(' ')[0] }}<li>
-                    <li><span style="color: red;">Hora:</span> {{ log.log_data_hora.split(' ')[1] }}<li>
+                    <li><span style="color: #28a745;">Data:</span> {{ log.log_data_hora.split(' ')[0] }}<li>
+                    <li><span style="color: #28a745;">Hora:</span> {{ log.log_data_hora.split(' ')[1] }}<li>
                 </ul>
                 <ul>
-                    <li><span style="color: red;">Operação:</span> {{ log.log_operacao }}</li>
-                    <li><span style="color: red;">Usuário:</span> {{ log.log_usuario }}</li>
+                    <li><span style="color: #28a745;">Operação:</span> {{ log.log_operacao }}</li>
+                    <li><span style="color: #28a745;">Usuário:</span> {{ log.log_usuario }}</li>
                 </ul>
             </div>
         {% endfor %}
