@@ -7,7 +7,7 @@ Clientes
 {% block head_extras %}
 <!-- link pro arquivo css  -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='style/clientes.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/logs.css') }}">
 <script src="{{ url_for('static', filename='script/menu.js') }}"></script>
 <script src="{{ url_for('static', filename='script/dell.js') }}"></script>
 {% endblock %}
@@ -62,9 +62,9 @@ Clientes
 <main>
     <h1>Histórico de logs</h1>
     
-    <div class="clientes">
+    <div class="logs">
         {% for log in logs %}
-            <div class="cliente">
+            <div class="log">
                 <ul>
                     <li><span style="color: red;">Data:</span> {{ log.log_data_hora.split(' ')[0] }}<li>
                     <li><span style="color: red;">Hora:</span> {{ log.log_data_hora.split(' ')[1] }}<li>
