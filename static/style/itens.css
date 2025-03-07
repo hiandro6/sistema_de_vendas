@@ -94,3 +94,7 @@ span {
 .links-p.venda a:hover {
     color: #0056b3;
 }
+
+.titulo {
+    font-weight: 800;
+}
