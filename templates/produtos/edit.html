@@ -78,26 +78,27 @@
 </nav>
 <main>
     <h1>Editar Produto</h1>
-    <form action="{{ url_for('produtos.edit', pro_id=produto.pro_id) }}" method="POST">
-        <h1>{{produto.pro_nome}}</h1>
-        <div>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" value="{{ produto.pro_nome }}" required>
+    <form action="{{ url_for('produtos.edit', pro_id=produto.pro_id) }}" method="POST" class="row g-3">
+        <div class="col-md-4">
+            <label for="nome" class="form-label">Nome:</label>
+            <input type="text" id="nome" name="nome" value="{{produto.pro_nome}}" required class="form-control">
         </div>
-        <div>
-            <label for="descricao">Descrição:</label>
-            <input type="text" id="descricao" name="descricao" value="{{ produto.pro_descricao }}" required>
+        <div class="col-md-4">
+            <label for="descricao" class="form-label">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" class="form-control" value="{{produto.pro_descricao}}" required>
         </div>
-        <div>
-            <label for="preco">preco:</label>
-            <input type="number" id="preco" name="preco" step="0.01" value="{{ produto.pro_preco }}">
+        <div class="col-md-4">
+            <label for="preco" class="form-label">Preço:</label>
+            <input type="number" id="preco" class="form-control" name="preco" step="0.01" value="{{produto.pro_preco}}">
         </div>
-        <div>
-            <label for="estoque">Estoque:</label>
-            <input type="number" id="estoque" name="estoque" value="{{ produto.pro_estoque }}">
+        <div class="col-md-4">
+            <label for="estoque" class="form-label">Estoque:</label>
+            <input type="number" id="estoque" class="form-control" name="estoque" value="{{produto.pro_estoque}}">
         </div>
         
-        <button type="submit">Salvar Alterações</button>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+        </div>
     </form>
 </main>
 {% endblock %}
