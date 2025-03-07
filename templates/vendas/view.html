@@ -115,7 +115,7 @@
                     {% endif %}
                     </div>
                     <div class="card-footer venda">
-                        <small class="text-body-secondary venda">Venda realizada em {{venda.ven_data}}</small>
+                        <small class="text-body-secondary venda">Venda realizada em {{venda.ven_data.split('-')[2]}}/{{venda.ven_data.split('-')[1]}}/{{venda.ven_data.split('-')[0]}}</small>
                     </div>    
                 </div>
                 </div>
