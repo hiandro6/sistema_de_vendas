@@ -92,7 +92,7 @@ Clientes
     </div>
     <div class="clientes">
         {% for cliente in clientes %}
-            {% if cliente.cli_email != "adm@adm" %}
+            {% if cliente.cli_email != "admin@admin" %}
                 <div class="cliente">
                     <ul>
                         <li><span style="color: red;">Nome:</span> {{ cliente.cli_nome }}</li>
