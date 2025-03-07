@@ -33,6 +33,7 @@ Produtos
                     <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
                     <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
                     <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
+                    <a href="{{url_for('relatorio.logs')}}">Histórico de logs</a>
                 </div>
             </div>
     
@@ -111,8 +112,7 @@ Produtos
             {%  if current_user.cli_tipo == 'admin'  %}
             <div class="links-p">
                 <a href="{{url_for('produtos.edit', pro_id=produto.pro_id)}}">Editar</a>
-                <a href="#"
-                    onclick="return confirmarDeletar('{{url_for('produtos.remove', pro_id=produto.pro_id)}}')">Deletar</a>
+                <a href="#"onclick="return confirmarDeletar('{{url_for('produtos.remove', pro_id=produto.pro_id)}}')">Deletar</a>
             </div>
             {% endif %}
         </li>

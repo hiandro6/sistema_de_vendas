@@ -1,14 +1,15 @@
 {% extends "model.html" %}
 
 {% block title %}
-    editar cliente
+Clientes
 {% endblock %}
 
 {% block head_extras %}
 <!-- link pro arquivo css  -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style/model.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='style/edit.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/clientes.css') }}">
 <script src="{{ url_for('static', filename='script/menu.js') }}"></script>
+<script src="{{ url_for('static', filename='script/dell.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -25,7 +26,6 @@
                     <a href="{{url_for('relatorio.naovendidos')}}">Não Vendidos</a>
                     <a href="{{url_for('relatorio.compras1k')}}">Compras +1000</a>
                     <a href="{{url_for('relatorio.totalcompras')}}">Total de Compras</a>
-                    <a href="{{url_for('relatorio.logs')}}">Histórico de logs</a>
                 </div>
             </div>
     
@@ -60,32 +60,40 @@
     </div>
 </nav>
 <main>
-    <h1>Editar Cliente</h1>
-    <form action="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}" method="POST" class="ed-cliente">
-        <form action="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}" method="POST">
-            <div>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" value="{{ cliente.cli_nome }}" required>
-            </div>
-            
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ cliente.cli_email }}" required>
-            </div>
-            
-            <div>
-                <label for="telefone">Telefone:</label>
-                <input type="number" id="telefone" name="telefone" value="{{ cliente.cli_telefone }}">
-            </div>
-            
-            <div>
-                <label for="endereco">Endereço:</label>
-                <input type="text" id="endereco" name="endereco" value="{{ cliente.cli_endereco }}">
-            </div>
-            
-            <button type="submit">Salvar Alterações</button>
+    <h1>Clientes Cadastrados</h1>
+    <div class="filtro">
+        <span>Ordernar por</span>
+        <form action="{{url_for('cliente.view')}}" method="post">
+            <select name="ordem" id="filtro-cli">
+                <option value="crescente">crescente</option>
+                <option value="decrescente">decrescente</option>
+            </select>
+
+            <button type="submit">Ordernar</button>
         </form>
-    </form>
+    </div>
+    <div class="clientes">
+        {% for cliente in clientes %}
+            {% if cliente.cli_email != "adm@adm" %}
+                <div class="cliente">
+                    <ul>
+                        <li><span style="color: red;">Nome:</span> {{ cliente.cli_nome }}</li>
+                        <li><span style="color: red;">Email:</span> {{ cliente.cli_email }}</li>
+                    </ul>
+                    <ul>
+                        <li><span style="color: red;">Contato:</span> {{ cliente.cli_telefone }}</li>
+                        <li><span style="color: red;">Endereço:</span> {{ cliente.cli_endereco }}</li>
+                        <li><span style="color: red;">ID:</span> {{ cliente.cli_id }}</li>
+                    </ul>
+                    <div class="acoes">
+                        <a href="{{ url_for('cliente.edit', cli_id=cliente.cli_id) }}">Editar</a>
+                        <a href="#" onclick="return confirmarDeletar('{{url_for('cliente.remove', cli_id=cliente.cli_id)}}')">Deletar</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </main>
+
 
 {% endblock %}

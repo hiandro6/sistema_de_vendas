@@ -207,3 +207,13 @@ WHERE pro_id NOT IN (
     finally:
         return render_template("relatorios/naovendidos.html", produtos=result)
     
+@relatorio_bp.route('/logs', methods=['GET', 'POST'])
+@login_required
+@role_required("admin")
+def logs():
+    if request.method == 'POST':
+        ordem = request.form['ordem']
+        clientes = Cliente.all(ordem=ordem)
+    elif request.method == 'GET':
+        clientes = Cliente.all()
+    return render_template('relatorios/logs.html', clientes = clientes)
